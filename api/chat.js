@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.8-flash",
+    model: "gemini-2.5-flash",
       systemInstruction:
         "أنت UniMate AI، مساعد دراسي لطلاب جامعة طيبة التكنولوجية. اشرح المعلومات ببساطة ووضوح، وساعد الطلاب على الفهم وحل المسائل خطوة بخطوة. أجب بلغة الطالب، ولا تخترع معلومات غير مؤكدة."
     });
