@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         result = await ai.interactions.create({
-          model: "gemini-3.8-flash",
+          model: "gemini-3.5-flash-lite",
           input: message,
           system_instruction:
             "أنت UniMate AI، مساعد دراسي لطلاب جامعة طيبة التكنولوجية. اشرح ببساطة ووضوح، وساعد الطلاب على الفهم وحل المسائل خطوة بخطوة. أجب بلغة الطالب، ولا تخترع معلومات غير مؤكدة."
