@@ -1,5 +1,5 @@
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
@@ -8,12 +8,13 @@ module.exports = async (req, res) => {
     });
   }
 
+  const sleep = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   try {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error("UniMate AI: GEMINI_API_KEY is missing");
-
       return res.status(500).json({
         error: "مفتاح Gemini غير مضبوط في إعدادات Vercel."
       });
@@ -33,25 +34,50 @@ module.exports = async (req, res) => {
       });
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
+    const ai = new GoogleGenAI({ apiKey });
 
-    const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
-      systemInstruction:
-        "أنت UniMate AI، مساعد دراسي لطلاب جامعة طيبة التكنولوجية. اشرح المعلومات ببساطة ووضوح، وساعد الطلاب على الفهم وحل المسائل خطوة بخطوة. أجب بلغة الطالب، ولا تخترع معلومات غير مؤكدة."
-    });
+    let lastError;
 
-    const result = await model.generateContent(message);
-    const answer = result.response.text();
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const result = await ai.interactions.create({
+          model: "gemini-3.8-flash",
+          input: message,
+          system_instruction:
+            "أنت UniMate AI، مساعد دراسي لطلاب جامعة طيبة التكنولوجية. اشرح ببساطة ووضوح، وساعد الطلاب على الفهم وحل المسائل خطوة بخطوة. أجب بلغة الطالب، ولا تخترع معلومات غير مؤكدة."
+        });
 
-    return res.status(200).json({
-      reply: answer
-    });
+        const answer =
+          result.output_text ||
+          result.outputs?.map((item) => item.text || "").join("\n") ||
+          "";
+
+        if (!answer.trim()) {
+          throw new Error("Gemini returned an empty response");
+        }
+
+        return res.status(200).json({ reply: answer });
+      } catch (error) {
+        lastError = error;
+
+        const status = error.status || error.statusCode;
+
+        if (status !== 503 && status !== 429 && status !== 500) {
+          throw error;
+        }
+
+        if (attempt < 2) {
+          await sleep(1000 * (attempt + 1));
+        }
+      }
+    }
+
+    throw lastError;
   } catch (error) {
     console.error("UniMate AI full error:", error);
 
     return res.status(500).json({
-      error: "حصلت مشكلة أثناء تجهيز الرد. راجعي سجل الأخطاء في Vercel."
+      error: "المساعد مشغول حاليًا. استني شوية وجربي تاني."
     });
   }
 };
