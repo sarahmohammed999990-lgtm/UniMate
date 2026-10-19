@@ -1,3 +1,4 @@
+
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 module.exports = async (req, res) => {
@@ -11,6 +12,8 @@ module.exports = async (req, res) => {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
+      console.error("UniMate AI: GEMINI_API_KEY is missing");
+
       return res.status(500).json({
         error: "مفتاح Gemini غير مضبوط في إعدادات Vercel."
       });
@@ -41,12 +44,14 @@ module.exports = async (req, res) => {
     const result = await model.generateContent(message);
     const answer = result.response.text();
 
-return res.status(200).json({ reply: answer });
+    return res.status(200).json({
+      reply: answer
+    });
   } catch (error) {
-    console.error("UniMate AI error:", error.message);
+    console.error("UniMate AI full error:", error);
 
     return res.status(500).json({
-      error: "حصلت مشكلة أثناء تجهيز الرد. جربي تاني."
+      error: "حصلت مشكلة أثناء تجهيز الرد. راجعي سجل الأخطاء في Vercel."
     });
   }
 };
