@@ -211,6 +211,7 @@ textarea.form-control{resize:vertical;min-height:105px;line-height:1.8}
     <div class="page-heading">
       <h2 id="pageTitle">الرئيسية</h2>
       <p id="pageSubtitle">كل احتياجاتك الجامعية في مكان واحد.</p>
+
     </div>
   </div>
   <div class="topbar-actions">
@@ -218,6 +219,162 @@ textarea.form-control{resize:vertical;min-height:105px;line-height:1.8}
     <button class="avatar" onclick="showSection('account')" id="topAvatar" aria-label="الملف الشخصي">ط</button>
   </div>
 </header>
+
+<section class="section active" id="home">
+  <div class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">جامعة طيبة التكنولوجية | UniMate</span>
+      <h2>أهلًا بك في مساحتك الجامعية 👋</h2>
+      <p>تنظيم المذاكرة، جمع مصادر الدراسة، مشاركة الأفكار مع الزملاء، والاستعانة بالذكاء الاصطناعي عند الحاجة إلى المساعدة.</p>
+      <button class="primary-btn" onclick="showSection('subjects')">ابدأ رحلتك ←</button>
+    </div>
+    <div class="hero-art">🎓</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">📚</div><div><h3 id="homeSubjectsCount">0</h3><p>المواد الدراسية</p></div></div>
+    <div class="stat-card"><div class="stat-icon">🔖</div><div><h3 id="homeSavedCount">0</h3><p>العناصر المحفوظة</p></div></div>
+    <div class="stat-card"><div class="stat-icon">✓</div><div><h3 id="homeTasksCount">0</h3><p>المهام المكتملة</p></div></div>
+  </div>
+
+  <div class="section-head"><div><h3>استكشف المنصة</h3><p>اختر القسم المناسب لك.</p></div></div>
+  <div class="cards-grid">
+    <div class="card"><div class="card-icon">📚</div><h3>المواد الدراسية</h3><p>جمع المواد والملاحظات الدراسية في مكان واحد.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('subjects')">عرض المواد</button></div></div>
+    <div class="card"><div class="card-icon">📖</div><h3>مكتبة الطلاب</h3><p>حفظ روابط المراجع والفيديوهات والمصادر المفيدة.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('library')">فتح المكتبة</button></div></div>
+    <div class="card"><div class="card-icon">👥</div><h3>مجتمع الطلاب</h3><p>كتابة منشور أو مشاركة نصيحة مع الزملاء.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('community')">دخول المجتمع</button></div></div>
+    <div class="card"><div class="card-icon">✨</div><h3>مساعد الذكاء الاصطناعي</h3><p>طرح الأسئلة الدراسية وطلب شرح الموضوعات بطريقة بسيطة.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('ai')">اسأل الآن</button></div></div>
+    <div class="card"><div class="card-icon">✍️</div><h3>أدواتي وملاحظاتي</h3><p>تنظيم المهام وتدوين الملاحظات المهمة للرجوع إليها.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('tools')">تنظيم المهام</button></div></div>
+    <div class="card"><div class="card-icon">🔖</div><h3>المحفوظات</h3><p>الرجوع بسرعة إلى المواد والمصادر المحفوظة.</p><div class="card-actions"><button class="secondary-btn" onclick="showSection('saved')">عرض المحفوظات</button></div></div>
+  </div>
+</section>
+
+<section class="section" id="subjects">
+  <div class="section-head"><div><h3>المواد الدراسية</h3><p>إضافة المواد الدراسية والاحتفاظ بمعلوماتها.</p></div><div class="search-box"><span>⌕</span><input id="subjectSearch" placeholder="ابحث عن مادة..." oninput="renderSubjects()"></div></div>
+  <div class="panel">
+    <h3>إضافة مادة جديدة</h3>
+    <form id="subjectForm">
+      <div class="form-group"><label for="subjectName">اسم المادة</label><input class="form-control" id="subjectName" required placeholder="مثال: الرسم الهندسي"></div>
+      <div class="form-group"><label for="subjectDesc">وصف مختصر (اختياري)</label><textarea class="form-control" id="subjectDesc" placeholder="أدخل تفاصيل تساعد على تذكر المادة"></textarea></div>
+      <button class="primary-btn" type="submit">+ إضافة المادة</button>
+    </form>
+  </div>
+  <div class="cards-grid" id="subjectsList"></div>
+</section>
+
+<section class="section" id="library">
+  <div class="section-head"><div><h3>مكتبة الطلاب</h3><p>حفظ روابط الكتب والمراجع والفيديوهات التعليمية.</p></div><div class="search-box"><span>⌕</span><input id="librarySearch" placeholder="ابحث في المكتبة..." oninput="renderLibrary()"></div></div>
+  <div class="panel">
+    <h3>إضافة مصدر جديد</h3>
+    <form id="libraryForm">
+      <div class="form-group"><label for="resourceTitle">عنوان المصدر</label><input class="form-control" id="resourceTitle" required placeholder="مثال: شرح الرسم الهندسي"></div>
+      <div class="form-group"><label for="resourceType">نوع المصدر</label><select class="form-control" id="resourceType"><option value="مرجع">مرجع أو كتاب</option><option value="فيديو">فيديو تعليمي</option><option value="موقع">موقع مفيد</option><option value="ملف">ملف أو مصدر آخر</option></select></div>
+      <div class="form-group"><label for="resourceUrl">رابط المصدر (اختياري)</label><input class="form-control" id="resourceUrl" type="url" placeholder="https://example.com"></div>
+      <div class="form-group"><label for="resourceDesc">ملاحظات (اختياري)</label><textarea class="form-control" id="resourceDesc" placeholder="ما الذي يميز هذا المصدر؟"></textarea></div>
+      <button class="primary-btn" type="submit">+ إضافة للمكتبة</button>
+    </form>
+  </div>
+  <div class="item-list" id="libraryList"></div>
+</section>
+
+<section class="section" id="community">
+  <div class="section-head"><div><h3>مجتمع الطلاب</h3><p>مشاركة معلومة أو نصيحة أو سؤال دراسي.</p></div></div>
+  <div class="panel">
+    <h3>كتابة منشور</h3>
+    <form id="postForm">
+      <div class="form-group"><label for="postTitle">عنوان المنشور</label><input class="form-control" id="postTitle" required placeholder="مثال: نصيحة للمذاكرة"></div>
+      <div class="form-group"><label for="postContent">المحتوى</label><textarea class="form-control" id="postContent" required placeholder="اكتب الفكرة أو السؤال هنا..."></textarea></div>
+      <button class="primary-btn" type="submit">نشر المنشور</button>
+    </form>
+    <div class="notice">ملاحظة: المنشورات في النسخة الحالية تُحفظ على المتصفح الحالي فقط، ولا تظهر تلقائيًا لباقي الطلاب.</div>
+  </div>
+  <div class="section-head"><h3>المنشورات</h3></div>
+  <div id="communityList"></div>
+</section>
+
+<section class="section" id="tools">
+  <div class="section-head"><div><h3>أدواتي وملاحظاتي</h3><p>تنظيم المهام وتدوين الملاحظات المهمة.</p></div></div>
+  <div class="content-grid">
+    <div class="panel">
+      <h3>✓ المهام الشخصية</h3>
+      <form id="taskForm"><div class="form-group"><label for="taskTitle">المهمة</label><input class="form-control" id="taskTitle" required placeholder="مثال: مراجعة محاضرة"></div><button class="primary-btn" type="submit">+ إضافة مهمة</button></form>
+      <div class="item-list" id="tasksList" style="margin-top:18px"></div>
+    </div>
+    <div class="panel">
+      <h3>📝 الملاحظات</h3>
+      <form id="noteForm"><div class="form-group"><label for="noteTitle">عنوان الملاحظة</label><input class="form-control" id="noteTitle" required placeholder="مثال: أفكار المشروع"></div><div class="form-group"><label for="noteContent">المحتوى</label><textarea class="form-control" id="noteContent" required placeholder="اكتب الملاحظة هنا..."></textarea></div><button class="primary-btn" type="submit">+ حفظ الملاحظة</button></form>
+      <div class="item-list" id="notesList" style="margin-top:18px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="saved">
+  <div class="section-head"><div><h3>المحفوظات</h3><p>جميع المواد والمصادر التي تم حفظها.</p></div></div>
+  <div id="savedList" class="item-list"></div>
+</section>
+
+<section class="section" id="ai">
+  <div class="section-head"><div><h3>UniMate AI</h3><p>اسأل عن الدراسة أو اطلب شرحًا خطوة بخطوة.</p></div></div>
+  <div class="ai-layout">
+    <div class="panel chat-panel">
+      <div class="chat-header"><div class="brand-icon">✨</div><div><h3>المساعد الدراسي</h3><p>اكتب السؤال لبدء المحادثة</p></div></div>
+      <div class="chat-messages" id="chatMessages" aria-live="polite"><div class="message bot">أهلًا بك! 👋 أنا مساعدك الدراسي داخل UniMate. اكتب سؤالك، ويمكنك طلب شرح موضوع أو المساعدة في فهم محاضرة.</div></div>
+      <form class="chat-form" id="chatForm"><input id="chatInput" autocomplete="off" required placeholder="اكتب سؤالك هنا..."><button class="primary-btn" id="sendChatBtn" type="submit">إرسال ↑</button></form>
+    </div>
+    <aside class="chat-side-note">
+      <h3>💡 أفكار للأسئلة</h3><p>اختر سؤالًا لإضافته إلى خانة الكتابة.</p>
+      <button class="suggestion" type="button" onclick="useSuggestion('اشرح لي هذا الموضوع بطريقة بسيطة مع أمثلة.')">شرح موضوع ببساطة</button>
+      <button class="suggestion" type="button" onclick="useSuggestion('ساعدني في إعداد خطة مذاكرة منظمة.')">إعداد خطة مذاكرة</button>
+      <button class="suggestion" type="button" onclick="useSuggestion('لخّص لي أهم النقاط في هذا الموضوع.')">تلخيص موضوع</button>
+      <button class="suggestion" type="button" onclick="useSuggestion('ساعدني على فهم المصطلحات الإنجليزية الخاصة بدراستي.')">مصطلحات إنجليزية للدراسة</button>
+      <div class="notice">للحصول على إجابات من الذكاء الاصطناعي، يجب أن يكون خادم المنصة متصلًا بخدمة AI. الواجهة وحدها لا تكفي.</div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" id="account">
+  <div class="section-head"><div><h3>الملف الشخصي</h3><p>إدارة البيانات الشخصية داخل المنصة.</p></div></div>
+  <div class="profile-card"><div class="profile-avatar">🎓</div><div><h3 id="profileDisplayName">حساب UniMate</h3><p>جامعة طيبة التكنولوجية</p></div></div>
+  <div class="panel">
+    <h3>البيانات الشخصية</h3>
+    <form id="profileForm">
+      <div class="form-group"><label for="profileName">الاسم</label><input class="form-control" id="profileName" placeholder="أدخل الاسم"></div>
+      <div class="form-group"><label for="profileDepartment">القسم أو التخصص</label><input class="form-control" id="profileDepartment" placeholder="أدخل القسم أو التخصص"></div>
+      <div class="form-group"><label for="profileYear">السنة الدراسية</label><select class="form-control" id="profileYear"><option value="">اختر السنة الدراسية</option><option value="الفرقة الأولى">الفرقة الأولى</option><option value="الفرقة الثانية">الفرقة الثانية</option><option value="الفرقة الثالثة">الفرقة الثالثة</option><option value="الفرقة الرابعة">الفرقة الرابعة</option><option value="غير محددة">غير محددة</option></select></div>
+      <button class="primary-btn" type="submit">حفظ البيانات</button>
+    </form>
+    <div class="notice">النسخة الحالية لا تحتوي على تسجيل دخول حقيقي أو قاعدة بيانات مشتركة. تُحفظ البيانات محليًا في هذا المتصفح.</div>
+  </div>
+</section>
+
+<!-- صفحة الدعم الفني الجديدة -->
+<section class="section" id="support">
+  <div class="section-head">
+    <div>
+      <h3>الدعم الفني</h3>
+      <p>تواصل معنا إذا واجهت مشكلة أو احتجت إلى المساعدة.</p>
+    </div>
+  </div>
+
+  <div class="panel support-card">
+    <div class="card-icon">🎧</div>
+    <h3>نحن هنا لمساعدتك</h3>
+    <p>يمكنك التواصل مع الدعم الفني بخصوص أي مشكلة تواجهك أثناء استخدام UniMate AI. اضغط على زر واتساب لفتح المحادثة وإرسال استفسارك.</p>
+
+    <div class="support-contact">
+      <div class="support-contact-icon">💬</div>
+      <div class="support-contact-info">
+        <strong>الدعم الفني عبر واتساب</strong>
+        <p dir="ltr">01067330431</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="primary-btn" onclick="showSection('ai')">✨ اسأل UniMate AI</button>
+    <button class="avatar" onclick="showSection('account')" id="topAvatar" aria-label="الملف الشخصي">ط</button>
+  </div>
+</header>
+
 
 <section class="section active" id="home">
   <div class="hero">
@@ -423,8 +580,28 @@ textarea.form-control{resize:vertical;min-height:105px;line-height:1.8}
   </div>
 </section>
 
+
+    <div class="card-actions">
+      <a
+        class="primary-btn support-whatsapp"
+        href="https://wa.me/201067330431?text=%D9%85%D8%B1%D8%AD%D8%A8%D9%8B%D8%A7%D8%8C%20%D8%A3%D9%88%D8%A7%D8%AC%D9%87%20%D9%85%D8%B4%D9%83%D9%84%D8%A9%20%D8%A3%D9%88%20%D9%84%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%A8%D8%AE%D8%B5%D9%88%D8%B5%20UniMate%20AI."
+        target="_blank"
+        rel="noopener noreferrer"
+        style="text-decoration:none"
+      >
+        <span>💬</span> تواصل عبر واتساب
+      </a>
+    </div>
+
+    <div class="notice">
+      ستُفتح محادثة واتساب مع رسالة جاهزة. يمكنك تعديل الرسالة وإضافة تفاصيل المشكلة قبل إرسالها.
+    </div>
+  </div>
+</section>
+
 </main>
 </div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -1001,8 +1178,13 @@ document.getElementById("chatForm").addEventListener("submit", async event => {
     button.textContent = "إرسال ↑";
     input.focus();
   }
-});
-
+}); 
+const SUPABASE_URL = "https://sidjmggbpnzkrjehvbih.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dAkN-ptgqUWDyxsaoZrFkA_IBaChv71";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 /* ربط إنشاء الحساب وتسجيل الدخول بـ Supabase */
 const authNameInput = document.getElementById("authName");
 const authEmailInput = document.getElementById("authEmail");
@@ -1126,12 +1308,7 @@ renderNotes();
 renderSaved();
 renderProfile();
 updateDashboard();
-const SUPABASE_URL = "https://sidjmggbpnzkrjehvbih.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_dAkN-ptgqUWDyxsaoZrFkA_IBaChv71";
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+
 </script>
 </body>
 </html>
