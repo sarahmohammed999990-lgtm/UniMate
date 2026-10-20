@@ -1,4 +1,10 @@
 {
+  "name": "unimate",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@google/genai": "^2.30.0",
     "@google/generative-ai": "^0.24.1",
