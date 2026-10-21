@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       --primary:#315C5A;
@@ -44,6 +45,7 @@
     .btn-primary{background:var(--primary);color:white}
     .btn-primary:hover{background:var(--dark)}
     .btn-light{background:var(--soft);color:var(--dark)}
+    .btn:disabled{opacity:.65;cursor:wait}
     .full{width:100%}
     .message{margin-top:14px;padding:12px;border-radius:10px;line-height:1.7;display:none;overflow-wrap:anywhere}
     .message.show{display:block}
@@ -79,7 +81,6 @@
     .chat-form{display:flex;gap:9px}
     .chat-form input{flex:1;min-width:0}
     .footer-note{font-size:12px;color:var(--muted);line-height:1.8;margin-top:18px}
-    .mobile-menu{display:none}
     @media(max-width:850px){
       .sidebar{width:76px;padding:18px 8px}
       .sidebar .brand{padding:0 6px 25px}
@@ -98,6 +99,7 @@
   </style>
 </head>
 <body>
+
   <div id="authScreen" class="auth-wrap">
     <div class="auth-card">
       <div class="brand">
@@ -106,10 +108,12 @@
       </div>
       <h2 style="margin-top:28px;margin-bottom:8px">مساحتك الجامعية في مكان واحد</h2>
       <p class="muted">منصة طلاب جامعة طيبة التكنولوجية للتعلم والتواصل وتنظيم الدراسة.</p>
+
       <div class="tabs">
         <button id="loginTab" class="active" type="button">تسجيل الدخول</button>
         <button id="signupTab" type="button">إنشاء حساب</button>
       </div>
+
       <form id="authForm">
         <div id="nameField" class="field hidden">
           <label for="authName">الاسم الكامل</label>
@@ -125,7 +129,7 @@
         </div>
         <button id="authSubmit" class="btn btn-primary full" type="submit">تسجيل الدخول</button>
       </form>
-      <div id="authMessage" class="message"></div>
+      <div id="authMessage" class="message" role="status" aria-live="polite"></div>
       <p class="footer-note">حسابك خاص بك. لا تشارك كلمة المرور مع أي شخص.</p>
     </div>
   </div>
@@ -167,50 +171,42 @@
 
       <section id="subjects" class="content-section">
         <div class="section-head"><h2>المواد الدراسية</h2><p>أضف موادك واحتفظ بملاحظات مختصرة لكل مادة.</p></div>
-        <div class="panel">
-          <form id="subjectForm">
-            <div class="field"><label for="subjectName">اسم المادة</label><input id="subjectName" required placeholder="اسم المادة الدراسية"></div>
-            <div class="field"><label for="subjectDetails">تفاصيل أو ملاحظات</label><textarea id="subjectDetails" rows="3" placeholder="ملاحظات عن المادة"></textarea></div>
-            <button class="btn btn-primary">إضافة المادة</button>
-          </form>
-        </div>
+        <div class="panel"><form id="subjectForm">
+          <div class="field"><label for="subjectName">اسم المادة</label><input id="subjectName" required placeholder="اسم المادة الدراسية"></div>
+          <div class="field"><label for="subjectDetails">تفاصيل أو ملاحظات</label><textarea id="subjectDetails" rows="3" placeholder="ملاحظات عن المادة"></textarea></div>
+          <button class="btn btn-primary">إضافة المادة</button>
+        </form></div>
         <div id="subjectsList"></div>
       </section>
 
       <section id="library" class="content-section">
         <div class="section-head"><h2>مكتبة الطلاب</h2><p>أضف روابط للمراجع والمصادر التي تحتاجها.</p></div>
-        <div class="panel">
-          <form id="libraryForm">
-            <div class="field"><label for="resourceName">اسم المورد</label><input id="resourceName" required placeholder="اسم الملف أو المرجع"></div>
-            <div class="field"><label for="resourceUrl">الرابط (اختياري)</label><input id="resourceUrl" type="url" placeholder="https://example.com"></div>
-            <div class="field"><label for="resourceDetails">وصف مختصر</label><textarea id="resourceDetails" rows="2" placeholder="ما فائدة هذا المورد؟"></textarea></div>
-            <button class="btn btn-primary">إضافة للمكتبة</button>
-          </form>
-        </div>
+        <div class="panel"><form id="libraryForm">
+          <div class="field"><label for="resourceName">اسم المورد</label><input id="resourceName" required placeholder="اسم الملف أو المرجع"></div>
+          <div class="field"><label for="resourceUrl">الرابط (اختياري)</label><input id="resourceUrl" type="url" placeholder="https://example.com"></div>
+          <div class="field"><label for="resourceDetails">وصف مختصر</label><textarea id="resourceDetails" rows="2" placeholder="ما فائدة هذا المورد؟"></textarea></div>
+          <button class="btn btn-primary">إضافة للمكتبة</button>
+        </form></div>
         <div id="libraryList"></div>
       </section>
 
       <section id="community" class="content-section">
-        <div class="section-head"><h2>مجتمع الطلاب</h2><p>اكتب منشورًا أو شارك سؤالًا مع مستخدمي هذا المتصفح.</p></div>
-        <div class="panel">
-          <form id="postForm">
-            <div class="field"><label for="postText">منشور جديد</label><textarea id="postText" rows="3" required placeholder="اكتب فكرتك أو سؤالك..."></textarea></div>
-            <button class="btn btn-primary">نشر</button>
-          </form>
-        </div>
+        <div class="section-head"><h2>مجتمع الطلاب</h2><p>اكتب منشورًا أو شارك سؤالًا.</p></div>
+        <div class="panel"><form id="postForm">
+          <div class="field"><label for="postText">منشور جديد</label><textarea id="postText" rows="3" required placeholder="اكتب فكرتك أو سؤالك..."></textarea></div>
+          <button class="btn btn-primary">نشر</button>
+        </form></div>
         <div id="postsList"></div>
-        <p class="footer-note">تنبيه: المنشورات في هذه النسخة محفوظة محليًا، وليست ظاهرة تلقائيًا لبقية الطلاب.</p>
+        <p class="footer-note">المنشورات في هذه النسخة محفوظة محليًا وليست ظاهرة تلقائيًا لبقية الطلاب.</p>
       </section>
 
       <section id="notes" class="content-section">
         <div class="section-head"><h2>أدواتي وملاحظاتي</h2><p>أنشئ ملاحظة أو قائمة مهام بسيطة.</p></div>
-        <div class="panel">
-          <form id="noteForm">
-            <div class="field"><label for="noteTitle">عنوان الملاحظة</label><input id="noteTitle" required placeholder="عنوان الملاحظة"></div>
-            <div class="field"><label for="noteText">المحتوى</label><textarea id="noteText" rows="4" required placeholder="اكتب الملاحظة أو المهمة"></textarea></div>
-            <button class="btn btn-primary">حفظ الملاحظة</button>
-          </form>
-        </div>
+        <div class="panel"><form id="noteForm">
+          <div class="field"><label for="noteTitle">عنوان الملاحظة</label><input id="noteTitle" required placeholder="عنوان الملاحظة"></div>
+          <div class="field"><label for="noteText">المحتوى</label><textarea id="noteText" rows="4" required placeholder="اكتب الملاحظة أو المهمة"></textarea></div>
+          <button class="btn btn-primary">حفظ الملاحظة</button>
+        </form></div>
         <div id="notesList"></div>
       </section>
 
@@ -227,28 +223,23 @@
             <input id="chatInput" required placeholder="اكتب سؤالك هنا...">
             <button id="chatSubmit" class="btn btn-primary">إرسال</button>
           </form>
-          <p class="footer-note">يحتاج المساعد إلى إعداد واجهة API على الخادم. لا تضَع مفتاح API داخل هذا الملف.</p>
+          <p class="footer-note">يحتاج المساعد إلى إعداد API على الخادم. لا تضع مفتاح API داخل هذا الملف.</p>
         </div>
       </section>
 
       <section id="profile" class="content-section">
         <div class="section-head"><h2>الملف الشخصي</h2><p>أكمل بياناتك الجامعية.</p></div>
-        <div class="panel">
-          <form id="profileForm">
-            <div class="field"><label for="profileName">الاسم</label><input id="profileName" placeholder="اسمك"></div>
-            <div class="field"><label for="profileDepartment">التخصص</label><input id="profileDepartment" placeholder="اكتب التخصص يدويًا"></div>
-            <div class="field"><label for="profileYear">الفرقة الدراسية</label><select id="profileYear"><option value="">اختر الفرقة</option><option>الفرقة الأولى</option><option>الفرقة الثانية</option><option>الفرقة الثالثة</option><option>الفرقة الرابعة</option></select></div>
-            <button class="btn btn-primary">حفظ البيانات</button>
-          </form>
-          <div id="profileMessage" class="message"></div>
-        </div>
+        <div class="panel"><form id="profileForm">
+          <div class="field"><label for="profileName">الاسم</label><input id="profileName" placeholder="اسمك"></div>
+          <div class="field"><label for="profileDepartment">التخصص</label><input id="profileDepartment" placeholder="اكتب التخصص يدويًا"></div>
+          <div class="field"><label for="profileYear">الفرقة الدراسية</label><select id="profileYear"><option value="">اختر الفرقة</option><option>الفرقة الأولى</option><option>الفرقة الثانية</option><option>الفرقة الثالثة</option><option>الفرقة الرابعة</option></select></div>
+          <button class="btn btn-primary">حفظ البيانات</button>
+        </form><div id="profileMessage" class="message"></div></div>
       </section>
 
       <section id="support" class="content-section">
         <div class="section-head"><h2>الدعم الفني</h2><p>إذا واجهت مشكلة في استخدام المنصة، تواصل مع فريق الدعم.</p></div>
-        <div class="card">
-          <h3>تحتاج إلى مساعدة؟</h3>
-          <p>يمكنك التواصل مع الدعم عبر واتساب.</p>
+        <div class="card"><h3>تحتاج إلى مساعدة؟</h3><p>يمكنك التواصل مع الدعم عبر واتساب.</p>
           <a class="btn btn-primary" href="https://wa.me/201067330431" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none">التواصل مع الدعم</a>
         </div>
       </section>
@@ -257,14 +248,19 @@
 
 <script>
 (() => {
+  "use strict";
+
   const SUPABASE_URL = "https://sidjmggbpnzkrjehvbih.supabase.co";
-  // استخدم مفتاح Supabase publishable/anon العام الخاص بمشروعك.
-  // لا تضع service_role key في المتصفح.
-  const SUPABASE_ANON_KEY = "sb_publishable_dAkN-ptgqUWDyxsaoZrFkA_IBaChv71";
+
+  // ضعي هنا المفتاح العام الحقيقي من:
+  // Supabase > Project Settings > API Keys > Publishable key
+  // لا تستخدمي service_role أو secret key.
+  const SUPABASE_ANON_KEY = "PASTE_REAL_SUPABASE_PUBLISHABLE_KEY_HERE";
 
   const $ = id => document.getElementById(id);
   const authScreen = $("authScreen");
   const appScreen = $("appScreen");
+
   let supabaseClient = null;
   let authMode = "login";
   let currentUser = null;
@@ -279,8 +275,10 @@
     element.className = "message";
   }
 
-  function safeText(value) {
-    return String(value ?? "");
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[char]);
   }
 
   function storageKey(name) {
@@ -289,21 +287,15 @@
 
   function readList(name) {
     try {
-      const data = JSON.parse(localStorage.getItem(storageKey(name)) || "[]");
-      return Array.isArray(data) ? data : [];
+      const result = JSON.parse(localStorage.getItem(storageKey(name)) || "[]");
+      return Array.isArray(result) ? result : [];
     } catch {
       return [];
     }
   }
 
-  function writeList(name, list) {
-    localStorage.setItem(storageKey(name), JSON.stringify(list));
-  }
-
-  function escapeHTML(value) {
-    return safeText(value).replace(/[&<>"']/g, char => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-    })[char]);
+  function writeList(name, items) {
+    localStorage.setItem(storageKey(name), JSON.stringify(items));
   }
 
   function switchAuthMode(mode) {
@@ -322,11 +314,11 @@
   $("signupTab").addEventListener("click", () => switchAuthMode("signup"));
 
   function showApp(user) {
+    if (!user) return;
     currentUser = user;
     authScreen.classList.add("hidden");
     appScreen.classList.remove("hidden");
     $("userBadge").textContent = user.user_metadata?.full_name || user.email || "طالب UniMate";
-    $("profileName").value = user.user_metadata?.full_name || "";
     renderAll();
     loadProfile();
   }
@@ -342,7 +334,7 @@
     clearMessage($("authMessage"));
 
     if (!supabaseClient) {
-      showMessage($("authMessage"), "أضيفي مفتاح Supabase العام الصحيح داخل الكود أولًا.");
+      showMessage($("authMessage"), "الاتصال بـ Supabase غير جاهز. راجعي المفتاح العام وإعدادات المشروع.");
       return;
     }
 
@@ -350,6 +342,7 @@
     const password = $("authPassword").value;
     const name = $("authName").value.trim();
     const submit = $("authSubmit");
+
     submit.disabled = true;
     submit.textContent = "جارٍ التحقق...";
 
@@ -358,27 +351,50 @@
         const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
-          options: { data: { full_name: name } }
+          options: {
+            data: { full_name: name }
+          }
         });
 
         if (error) throw error;
 
-        if (data.session) {
+        if (data.session && data.user) {
           showApp(data.user);
+          showMessage($("authMessage"), "تم إنشاء الحساب وتسجيل الدخول بنجاح.", "success");
         } else {
           showMessage(
             $("authMessage"),
-            "تم إنشاء الطلب، لكن لم يتم تسجيل الدخول مباشرة. تأكدي من تعطيل Confirm email في Supabase، ثم حاولي مجددًا. إذا كان البريد مسجلًا بالفعل، استخدمي تسجيل الدخول.",
+            "لم يتم تسجيل الدخول تلقائيًا. راجعي إعداد Confirm email في Supabase. إذا كان مفعّلًا، عطّليه للسماح بالدخول مباشرة. إذا كان الحساب موجودًا بالفعل، استخدمي تبويب تسجيل الدخول.",
             "error"
           );
         }
       } else {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) {
+          const msg = error.message || "";
+          if (/invalid api key|invalidapikey|apikey/i.test(msg)) {
+            throw new Error("مفتاح Supabase غير صالح. انسخي Publishable key الصحيح من إعدادات مشروعك.");
+          }
+          if (/invalid login credentials/i.test(msg)) {
+            throw new Error("البريد أو كلمة المرور غير صحيحين، أو أن الحساب غير موجود في مشروع Supabase الحالي.");
+          }
+          throw error;
+        }
+
+        if (!data.session || !data.user) {
+          throw new Error("لم يتم إنشاء جلسة دخول. حاولي مرة أخرى.");
+        }
+
         showApp(data.user);
+        clearMessage($("authMessage"));
       }
     } catch (error) {
-      showMessage($("authMessage"), error.message || "حدث خطأ. تحققي من البيانات وحاولي مجددًا.");
+      console.error("Auth error:", error);
+      showMessage($("authMessage"), error.message || "حدث خطأ أثناء تسجيل الدخول.");
     } finally {
       submit.disabled = false;
       submit.textContent = authMode === "signup" ? "إنشاء الحساب والدخول" : "تسجيل الدخول";
@@ -386,13 +402,20 @@
   });
 
   $("logoutBtn").addEventListener("click", async () => {
-    if (supabaseClient) await supabaseClient.auth.signOut();
+    if (supabaseClient) {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        showMessage($("authMessage"), "تعذر تسجيل الخروج. حاولي مجددًا.");
+        return;
+      }
+    }
     showAuth();
   });
 
   document.querySelectorAll("[data-section]").forEach(button => {
     button.addEventListener("click", () => navigate(button.dataset.section));
   });
+
   document.querySelectorAll("[data-go]").forEach(button => {
     button.addEventListener("click", () => navigate(button.dataset.go));
   });
@@ -402,8 +425,10 @@
     document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
       button.classList.toggle("active", button.dataset.section === sectionId);
     });
+
     const target = $(sectionId);
     if (target) target.classList.add("active");
+
     const activeButton = document.querySelector('.nav-btn[data-section="' + sectionId + '"]');
     $("pageTitle").textContent = activeButton?.innerText.trim() || "UniMate";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -412,6 +437,7 @@
   function makeItemHTML(item, kind) {
     const details = item.details || item.text || "";
     let link = "";
+
     if (item.url) {
       try {
         const parsed = new URL(item.url);
@@ -420,6 +446,7 @@
         }
       } catch {}
     }
+
     return '<div class="item"><strong>' + escapeHTML(item.title) + '</strong>' +
       (details ? '<p style="white-space:pre-wrap;line-height:1.8">' + escapeHTML(details) + '</p>' : '') +
       link +
@@ -427,11 +454,20 @@
       '<button type="button" data-delete="' + escapeHTML(kind) + '" data-id="' + escapeHTML(item.id) + '">حذف</button></div></div>';
   }
 
-  function renderList(elementId, kind, list) {
+  function renderList(elementId, kind, items) {
     const element = $(elementId);
-    element.innerHTML = list.length
-      ? list.map(item => makeItemHTML(item, kind)).join("")
+    element.innerHTML = items.length
+      ? items.map(item => makeItemHTML(item, kind)).join("")
       : '<div class="card"><p class="muted">لا توجد عناصر حتى الآن.</p></div>';
+  }
+
+  function renderSaved() {
+    const saved = readList("saved");
+    $("savedList").innerHTML = saved.length ? saved.map(item =>
+      '<div class="item"><strong>' + escapeHTML(item.title) + '</strong><p>' +
+      escapeHTML(item.details || item.text || "") + '</p><button class="btn btn-light" data-unsave="' +
+      escapeHTML(item.id) + '" data-kind="' + escapeHTML(item.kind) + '">إزالة من المحفوظات</button></div>'
+    ).join("") : '<div class="card"><p class="muted">لم تحفظ أي عناصر بعد.</p></div>';
   }
 
   function renderAll() {
@@ -445,11 +481,13 @@
   document.addEventListener("click", event => {
     const saveButton = event.target.closest("[data-save]");
     const deleteButton = event.target.closest("[data-delete]");
+    const unsaveButton = event.target.closest("[data-unsave]");
 
     if (saveButton) {
       const kind = saveButton.dataset.save;
       const id = saveButton.dataset.id;
       const item = readList(kind).find(entry => entry.id === id);
+
       if (item) {
         const saved = readList("saved");
         if (!saved.some(entry => entry.id === id && entry.kind === kind)) {
@@ -467,24 +505,13 @@
       writeList(kind, readList(kind).filter(item => item.id !== id));
       renderAll();
     }
-  });
 
-  function renderSaved() {
-    const saved = readList("saved");
-    $("savedList").innerHTML = saved.length ? saved.map(item =>
-      '<div class="item"><strong>' + escapeHTML(item.title) + '</strong><p>' +
-      escapeHTML(item.details || item.text || "") + '</p><button class="btn btn-light" data-unsave="' +
-      escapeHTML(item.id) + '" data-kind="' + escapeHTML(item.kind) + '">إزالة من المحفوظات</button></div>'
-    ).join("") : '<div class="card"><p class="muted">لم تحفظ أي عناصر بعد.</p></div>';
-  }
-
-  document.addEventListener("click", event => {
-    const button = event.target.closest("[data-unsave]");
-    if (!button) return;
-    writeList("saved", readList("saved").filter(item =>
-      !(item.id === button.dataset.unsave && item.kind === button.dataset.kind)
-    ));
-    renderSaved();
+    if (unsaveButton) {
+      writeList("saved", readList("saved").filter(item =>
+        !(item.id === unsaveButton.dataset.unsave && item.kind === unsaveButton.dataset.kind)
+      ));
+      renderSaved();
+    }
   });
 
   function addItem(formId, listName, getItem) {
@@ -522,7 +549,11 @@
   }));
 
   function loadProfile() {
-    const profile = JSON.parse(localStorage.getItem(storageKey("profile")) || "{}");
+    let profile = {};
+    try {
+      profile = JSON.parse(localStorage.getItem(storageKey("profile")) || "{}");
+    } catch {}
+
     $("profileName").value = profile.name || currentUser?.user_metadata?.full_name || "";
     $("profileDepartment").value = profile.department || "";
     $("profileYear").value = profile.year || "";
@@ -530,11 +561,13 @@
 
   $("profileForm").addEventListener("submit", event => {
     event.preventDefault();
+
     const profile = {
       name: $("profileName").value.trim(),
       department: $("profileDepartment").value.trim(),
       year: $("profileYear").value
     };
+
     localStorage.setItem(storageKey("profile"), JSON.stringify(profile));
     $("userBadge").textContent = profile.name || currentUser?.email || "طالب UniMate";
     showMessage($("profileMessage"), "تم حفظ بيانات الملف الشخصي على هذا الجهاز.", "success");
@@ -542,14 +575,18 @@
 
   $("chatForm").addEventListener("submit", async event => {
     event.preventDefault();
+
     const question = $("chatInput").value.trim();
     if (!question) return;
+
     const box = $("chatBox");
     const userBubble = document.createElement("div");
     userBubble.className = "bubble user";
     userBubble.textContent = question;
     box.appendChild(userBubble);
+
     $("chatInput").value = "";
+
     const loading = document.createElement("div");
     loading.className = "bubble ai";
     loading.textContent = "جارٍ تجهيز الرد...";
@@ -563,11 +600,17 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: question })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "تعذر الحصول على رد من المساعد.");
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {}
+
+      if (!response.ok) throw new Error(data.error || "تعذر الحصول على رد.");
       loading.textContent = data.reply || data.response || data.text || data.message || data.answer || "وصل رد غير متوقع.";
     } catch (error) {
-      loading.textContent = "لم أتمكن من الاتصال بالمساعد. تأكدي من إعداد /api/chat في المشروع المنشور، ثم حاولي مجددًا.";
+      console.error("AI error:", error);
+      loading.textContent = "لم أتمكن من الاتصال بالمساعد. تأكدي من وجود ملف /api/chat وإعداده في Vercel.";
     } finally {
       $("chatSubmit").disabled = false;
       box.scrollTop = box.scrollHeight;
@@ -575,23 +618,42 @@
   });
 
   async function initialize() {
-    if (SUPABASE_ANON_KEY === "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE") {
-      showMessage($("authMessage"), "قبل استخدام تسجيل الدخول، استبدلي PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE بمفتاح Supabase العام الصحيح.");
+    const message = $("authMessage");
+
+    if (!window.supabase || !window.supabase.createClient) {
+      showMessage(message, "تعذر تحميل مكتبة Supabase. تحققي من اتصال الإنترنت ثم أعيدي تحميل الصفحة.");
+      return;
+    }
+
+    if (
+      !SUPABASE_URL.startsWith("https://") ||
+      !SUPABASE_ANON_KEY ||
+      SUPABASE_ANON_KEY === "PASTE_REAL_SUPABASE_PUBLISHABLE_KEY_HERE"
+    ) {
+      showMessage(message, "ضعي المفتاح العام الحقيقي من Supabase داخل الكود قبل تسجيل الدخول.");
       return;
     }
 
     try {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
       const { data, error } = await supabaseClient.auth.getSession();
       if (error) throw error;
+
       if (data.session?.user) {
         showApp(data.session.user);
       }
-      supabaseClient.auth.onAuthStateChange((_event, session) => {
-        if (session?.user) showApp(session.user);
+
+      supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (session?.user) {
+          showApp(session.user);
+        } else if (event === "SIGNED_OUT") {
+          showAuth();
+        }
       });
     } catch (error) {
-      showMessage($("authMessage"), "تعذر الاتصال بـ Supabase. راجعي رابط المشروع والمفتاح العام.");
+      console.error("Supabase initialization error:", error);
+      showMessage(message, "تعذر الاتصال بـ Supabase. راجعي رابط المشروع والمفتاح العام من إعدادات المشروع.");
     }
   }
 
