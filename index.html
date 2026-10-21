@@ -2,742 +2,1995 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#315C5A">
-<title>UniMate | جامعة طيبة التكنولوجية</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#315C5A">
+  <title>UniMate | جامعة طيبة التكنولوجية</title>
 
-<!-- أيقونة الموقع في تبويب المتصفح -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='23' fill='%23315C5A'/%3E%3Ctext x='50' y='68' font-size='59' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E">
+  <!-- أيقونة UniMate في تبويب المتصفح -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='23' fill='%23315C5A'/%3E%3Cpath d='M28 24v34c0 28 44 28 44 0V24H58v34c0 10-16 10-16 0V24z' fill='white'/%3E%3C/svg%3E">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-:root{
-  --primary:#315C5A;
-  --dark:#234443;
-  --soft:#DCE8E4;
-  --bg:#F7F8F6;
-  --white:#FFFFFF;
-  --text:#263633;
-  --muted:#74817C;
-  --border:#E5EAE6;
-  --danger:#B54747;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Tajawal",sans-serif;background:var(--bg);color:var(--text)}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-[hidden]{display:none!important}
+  <style>
+    :root {
+      --primary: #315C5A;
+      --dark: #234443;
+      --soft: #DCE8E4;
+      --bg: #F7F8F6;
+      --white: #FFFFFF;
+      --text: #263635;
+      --muted: #788582;
+      --border: #E3E9E6;
+      --danger: #B54747;
+      --shadow: 0 5px 24px rgba(35, 68, 67, .06);
+    }
 
-.sidebar{
- position:fixed;right:0;top:0;width:245px;height:100vh;
- background:white;border-left:1px solid var(--border);
- padding:23px 16px;overflow-y:auto;z-index:20
-}
-.brand{display:flex;align-items:center;gap:11px;padding:0 7px 23px;border-bottom:1px solid var(--border);margin-bottom:18px}
-.brand-mark{width:43px;height:43px;border-radius:13px;background:var(--primary);color:white;display:grid;place-items:center;font-weight:800;font-size:22px}
-.brand h1{margin:0;color:var(--dark);font-size:22px}
-.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
-.nav-label{font-size:12px;color:var(--muted);padding:8px 12px}
-.nav-btn{display:flex;gap:11px;align-items:center;width:100%;border:0;background:transparent;padding:12px;border-radius:11px;text-align:right;color:#53645E;margin:3px 0}
-.nav-btn:hover,.nav-btn.active{background:var(--soft);color:var(--dark);font-weight:700}
-.nav-icon{width:24px;text-align:center;font-size:18px}
-.sidebar-footer{background:#F3F6F3;padding:13px;border-radius:13px;color:var(--muted);font-size:12px;line-height:1.8;margin-top:22px}
+    * {
+      box-sizing: border-box;
+    }
 
-.main{margin-right:245px;min-height:100vh}
-.topbar{min-height:75px;background:white;border-bottom:1px solid var(--border);padding:13px 27px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}
-.topbar h2{margin:0;font-size:20px}
-.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px}
-.topbar-left{display:flex;align-items:center;gap:10px}
-.user-chip{display:flex;align-items:center;gap:9px;border:1px solid var(--border);background:var(--bg);padding:7px 11px;border-radius:12px}
-.avatar{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:var(--soft);color:var(--dark);font-weight:800}
-.content{max-width:1300px;margin:auto;padding:27px}
-.section{display:none}
-.section.active{display:block}
-.welcome{padding:28px;border-radius:21px;background:linear-gradient(120deg,#234443,#3F7068);color:white;margin-bottom:22px}
-.welcome h2{font-size:27px;margin:0 0 9px}
-.welcome p{line-height:1.9;color:#E3EEEA;max-width:650px}
-.btn{display:inline-block;border:0;border-radius:10px;background:var(--primary);color:white;padding:11px 16px;font-weight:700;text-decoration:none}
-.btn:hover{filter:brightness(.94)}
-.btn.soft{background:var(--soft);color:var(--dark)}
-.btn.light{background:white;color:var(--dark)}
-.btn.danger{background:#F9E8E7;color:var(--danger)}
-.btn.small{padding:7px 10px;font-size:13px}
-.btn:disabled{opacity:.6;cursor:not-allowed}
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Tajawal", sans-serif;
+      font-size: 15px;
+    }
 
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}
-.stat,.panel,.card{background:white;border:1px solid var(--border);border-radius:17px;box-shadow:0 7px 25px #2344430a}
-.stat{padding:20px}
-.stat strong{display:block;font-size:29px;color:var(--dark);margin-top:13px}
-.stat p{color:var(--muted);font-size:13px;margin-bottom:0}
-.stat-icon{float:left;background:var(--soft);border-radius:11px;padding:10px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.section-head h3{font-size:22px;margin:0 0 5px}
-.section-head p,.muted{color:var(--muted);font-size:13px;line-height:1.8;margin:0}
-.panel{padding:21px;margin-bottom:19px}
-.panel h3{margin:0 0 15px}
-.content-grid,.item-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.field{margin-bottom:13px}
-.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-.field input,.field textarea,.field select,.search-input{
- width:100%;border:1px solid #DDE5E0;background:#FCFDFC;
- border-radius:10px;padding:12px;color:var(--text)
-}
-.field textarea{min-height:95px;resize:vertical}
-.field input:focus,.field textarea:focus,.field select:focus{outline:2px solid #DCE8E4;border-color:var(--primary)}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.toolbar{display:flex;gap:10px;margin-bottom:17px}
-.search-input{flex:1;min-width:0}
-.card{padding:17px;min-width:0}
-.card h4{margin:0 0 8px;font-size:17px;overflow-wrap:anywhere}
-.card p{color:var(--muted);font-size:14px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
-.card-meta{color:var(--muted);font-size:12px;margin:8px 0}
-.card-actions{display:flex;flex-wrap:wrap;gap:8px}
-.tag{display:inline-block;background:#F0F4F1;color:var(--primary);padding:5px 9px;border-radius:8px;font-size:12px;margin-bottom:9px}
-.empty{grid-column:1/-1;text-align:center;padding:30px 12px;border:1px dashed #D6E0D9;border-radius:13px;color:var(--muted);line-height:1.9}
-.empty span{display:block;font-size:27px;margin-bottom:7px}
-.divider{border:0;border-top:1px solid var(--border);margin:20px 0}
-.inline-actions{display:flex;flex-wrap:wrap;gap:8px}
-.chat-box{height:490px;display:flex;flex-direction:column}
-.chat-messages{flex:1;overflow-y:auto;padding:5px}
-.message{max-width:90%;width:fit-content;padding:11px 14px;border-radius:13px;margin:8px 0;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
-.message.bot{background:#F0F4F1;border-bottom-right-radius:4px}
-.message.user{background:var(--primary);color:white;margin-right:auto;border-bottom-left-radius:4px}
-.chat-form{display:flex;gap:9px;border-top:1px solid var(--border);padding-top:14px}
-.chat-form input{flex:1;min-width:0;border:1px solid var(--border);border-radius:10px;padding:12px}
-.auth-status{padding:11px 13px;border-radius:10px;background:#F1F5F2;color:var(--dark);line-height:1.8;font-size:13px;margin:12px 0;overflow-wrap:anywhere}
-.auth-status.error{background:#FCEDEC;color:#9D3030}
-.profile-summary{display:flex;align-items:center;gap:13px;margin-bottom:20px}
-.profile-summary .avatar{width:55px;height:55px;font-size:22px}
-.profile-summary h3{margin:0 0 5px}
-.profile-summary p{margin:0;color:var(--muted);font-size:13px}
-.toast{position:fixed;bottom:20px;left:20px;z-index:100;background:var(--dark);color:white;padding:13px 18px;border-radius:11px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw}
-.toast.show{opacity:1}
-.mobile-menu{display:none}
+    button, input, textarea, select {
+      font: inherit;
+    }
 
-@media(max-width:950px){
- .sidebar{width:220px}.main{margin-right:220px}.content{padding:20px}
-}
-@media(max-width:720px){
- .sidebar{transform:translateX(100%);transition:.25s;box-shadow:none}
- .sidebar.open{transform:translateX(0);box-shadow:0 0 0 100vmax #0005}
- .main{margin-right:0}.topbar{padding:12px}
- .mobile-menu{display:grid;place-items:center;width:39px;height:39px;border:1px solid var(--border);border-radius:10px;background:white;font-size:19px}
- .topbar h2{font-size:17px}.topbar p{max-width:230px}
- .user-name{display:none}.content{padding:14px}
- .stats,.content-grid,.item-list,.form-grid{grid-template-columns:1fr}
- .welcome{padding:22px}.welcome h2{font-size:23px}.panel{padding:16px}
-}
-</style>
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .6;
+    }
+
+    .app {
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--white);
+      border-left: 1px solid var(--border);
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 20;
+      padding: 24px 16px;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px 28px;
+    }
+
+    .brand-logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      background: var(--primary);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--dark);
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .nav-title {
+      color: #9AA5A1;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+
+    .nav-menu {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      color: #61716D;
+      text-align: right;
+      width: 100%;
+      padding: 12px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      transition: .2s;
+    }
+
+    .nav-btn:hover {
+      background: #F2F6F4;
+      color: var(--primary);
+    }
+
+    .nav-btn.active {
+      background: var(--soft);
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 23px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .sidebar-bottom {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      padding: 17px 7px 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .main {
+      margin-right: 250px;
+      padding: 28px 32px 50px;
+      max-width: 1600px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .welcome-small {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 5px;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 25px;
+      color: var(--dark);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--soft);
+      color: var(--dark);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 17px;
+    }
+
+    .section {
+      display: none;
+      animation: appear .2s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      padding: 31px;
+      background: linear-gradient(125deg, var(--dark), var(--primary));
+      color: white;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .hero h3 {
+      font-size: 27px;
+      margin: 0 0 12px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #E1ECE8;
+      line-height: 1.9;
+      max-width: 560px;
+    }
+
+    .hero-mark {
+      font-size: 95px;
+      opacity: .16;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 27px 0 16px;
+    }
+
+    .section-head h3 {
+      margin: 0 0 5px;
+      font-size: 20px;
+      color: var(--dark);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card, .panel, .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card {
+      padding: 20px;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--soft);
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--dark);
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      padding: 21px;
+      min-width: 0;
+    }
+
+    .card h4 {
+      margin: 0 0 9px;
+      color: var(--dark);
+      font-size: 17px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+      margin: 0;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 17px;
+    }
+
+    .panel {
+      padding: 23px;
+      margin-bottom: 18px;
+      min-width: 0;
+    }
+
+    .panel h3 {
+      color: var(--dark);
+      margin: 0 0 9px;
+    }
+
+    .panel > p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin: 0 0 18px;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--dark);
+    }
+
+    .btn-light {
+      background: #F1F5F3;
+      color: var(--dark);
+      border-color: var(--border);
+    }
+
+    .btn-danger {
+      background: #FFF0F0;
+      color: var(--danger);
+    }
+
+    .btn-small {
+      font-size: 12px;
+      padding: 7px 11px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 16px;
+      min-width: 0;
+    }
+
+    .field label {
+      color: var(--dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input, .field textarea, .field select,
+    .chat-input input {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 13px;
+      background: #FCFDFC;
+      border: 1px solid #DDE5E1;
+      border-radius: 10px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .field input:focus, .field textarea:focus,
+    .field select:focus, .chat-input input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(49, 92, 90, .08);
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.8;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 12px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      color: #8B3030;
+      background: #FFF0F0;
+      border: 1px solid #F1D1D1;
+    }
+
+    .message.success {
+      color: #245A40;
+      background: #EDF8F0;
+      border: 1px solid #D1EAD7;
+    }
+
+    .item-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .list-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .list-item h4 {
+      margin: 0 0 7px;
+      color: var(--dark);
+    }
+
+    .list-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 14px;
+      color: var(--muted);
+      background: white;
+      border: 1px dashed #D5E0DA;
+      border-radius: 13px;
+      line-height: 1.9;
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 20px;
+      background: var(--soft);
+      color: var(--dark);
+      padding: 4px 9px;
+      font-size: 11px;
+      margin-bottom: 9px;
+    }
+
+    .chat-box {
+      min-height: 280px;
+      max-height: 470px;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      background: #F9FBF9;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      margin-bottom: 14px;
+    }
+
+    .chat-message {
+      max-width: 88%;
+      padding: 12px 15px;
+      border-radius: 13px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .chat-message.user {
+      align-self: flex-start;
+      color: white;
+      background: var(--primary);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-message.bot {
+      align-self: flex-end;
+      background: white;
+      border: 1px solid var(--border);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+    }
+
+    .chat-input button {
+      flex-shrink: 0;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 17px 0;
+    }
+
+    .auth-tab {
+      flex: 1;
+      border: 1px solid var(--border);
+      background: #F5F8F6;
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 11px;
+      font-weight: 700;
+    }
+
+    .auth-tab.active {
+      background: var(--soft);
+      color: var(--dark);
+      border-color: #C4D9D1;
+    }
+
+    .account-status {
+      padding: 15px;
+      background: #F0F6F3;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 1000px) {
+      .sidebar {
+        width: 220px;
+      }
+      .main {
+        margin-right: 220px;
+        padding: 23px 20px 40px;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar {
+        transform: translateX(100%);
+        transition: transform .25s ease;
+        width: 270px;
+        box-shadow: var(--shadow);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main {
+        margin-right: 0;
+        padding: 18px 14px 35px;
+      }
+      .mobile-menu {
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        background: white;
+        color: var(--dark);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        font-size: 20px;
+      }
+      .topbar {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .topbar h2 {
+        font-size: 21px;
+      }
+      .top-actions {
+        margin-right: auto;
+      }
+      .hero {
+        padding: 23px 20px;
+      }
+      .hero h3 {
+        font-size: 23px;
+      }
+      .hero-mark {
+        display: none;
+      }
+      .content-grid, .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-head {
+        align-items: flex-start;
+      }
+      .panel {
+        padding: 17px;
+      }
+      .chat-input {
+        flex-wrap: wrap;
+      }
+      .chat-input input {
+        flex-basis: 100%;
+      }
+      .chat-input button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 <div class="app">
+
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-mark">U</div>
-      <div><h1>UniMate</h1><p>رفيقك في الحياة الجامعية</p></div>
+      <div class="brand-logo">U</div>
+      <div>
+        <h1>UniMate</h1>
+        <p>رفيقك في الحياة الجامعية</p>
+      </div>
     </div>
-    <div class="nav-label">القائمة الرئيسية</div>
-    <nav>
-      <button class="nav-btn active" data-section="home"><span class="nav-icon">⌂</span> الرئيسية</button>
-      <button class="nav-btn" data-section="subjects"><span class="nav-icon">▤</span> المواد الدراسية</button>
-      <button class="nav-btn" data-section="library"><span class="nav-icon">▣</span> مكتبة الطلاب</button>
-      <button class="nav-btn" data-section="community"><span class="nav-icon">♧</span> مجتمع الطلاب</button>
-      <button class="nav-btn" data-section="tools"><span class="nav-icon">✓</span> أدواتي وملاحظاتي</button>
-      <button class="nav-btn" data-section="saved"><span class="nav-icon">☆</span> المحفوظات</button>
-      <button class="nav-btn" data-section="ai"><span class="nav-icon">✳</span> مساعد UniMate AI</button>
-      <button class="nav-btn" data-section="account"><span class="nav-icon">♙</span> الملف الشخصي</button>
-      <button class="nav-btn" data-section="support"><span class="nav-icon">♡</span> الدعم الفني</button>
+
+    <div class="nav-title">القائمة الرئيسية</div>
+
+    <nav class="nav-menu">
+      <button class="nav-btn active" data-section="home">
+        <span class="nav-icon">⌂</span> الرئيسية
+      </button>
+      <button class="nav-btn" data-section="subjects">
+        <span class="nav-icon">▤</span> المواد الدراسية
+      </button>
+      <button class="nav-btn" data-section="library">
+        <span class="nav-icon">▥</span> مكتبة الطلاب
+      </button>
+      <button class="nav-btn" data-section="community">
+        <span class="nav-icon">♧</span> مجتمع الطلاب
+      </button>
+      <button class="nav-btn" data-section="tools">
+        <span class="nav-icon">✓</span> أدواتي وملاحظاتي
+      </button>
+      <button class="nav-btn" data-section="saved">
+        <span class="nav-icon">♡</span> المحفوظات
+      </button>
+      <button class="nav-btn" data-section="ai">
+        <span class="nav-icon">✧</span> مساعد UniMate AI
+      </button>
+      <button class="nav-btn" data-section="account">
+        <span class="nav-icon">♙</span> الملف الشخصي
+      </button>
+      <button class="nav-btn" data-section="support">
+        <span class="nav-icon">☏</span> الدعم الفني
+      </button>
     </nav>
-    <div class="sidebar-footer"><strong>UniMate</strong><br>مساحة طلابية لتنظيم الدراسة وتبادل المعرفة.</div>
+
+    <div class="sidebar-bottom">
+      UniMate<br>
+      منصة طلابية لجامعة طيبة التكنولوجية
+    </div>
   </aside>
 
   <main class="main">
     <header class="topbar">
-      <div class="topbar-left">
-        <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
-        <div>
-          <h2 id="pageTitle">الرئيسية</h2>
-          <p>جامعة طيبة التكنولوجية · كلية تكنولوجيا الصناعة والطاقة</p>
-        </div>
+      <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
+      <div>
+        <p class="welcome-small">أهلًا بك في UniMate</p>
+        <h2 id="pageTitle">الرئيسية</h2>
       </div>
-      <button class="user-chip" id="profileShortcut" type="button">
-        <span class="avatar" id="topAvatar">ط</span>
-        <span class="user-name" id="topName">زائر UniMate</span>
-      </button>
+      <div class="top-actions">
+        <div class="avatar" id="topAvatar">U</div>
+      </div>
     </header>
 
-    <div class="content">
-      <section class="section active" id="home">
-        <div class="welcome">
-          <h2 id="welcomeTitle">أهلًا بك في UniMate 👋</h2>
-          <p>نظّم دراستك، احتفظ بملاحظاتك، شارك أفكارك مع زملائك، واستفد من أدوات تساعدك في رحلتك الجامعية.</p>
-          <button class="btn light" data-go="subjects">استكشف المواد الدراسية ←</button>
+    <!-- الرئيسية -->
+    <section class="section active" id="home">
+      <div class="hero">
+        <div>
+          <h3>كل حياتك الجامعية في مكان واحد</h3>
+          <p>
+            نظّم دراستك، احتفظ بملاحظاتك، شارك أفكارك مع زملائك،
+            واستخدم مساعد UniMate AI لمساعدتك في المذاكرة.
+          </p>
+          <div class="card-actions">
+            <button class="btn btn-light" data-go="subjects">استكشف المواد</button>
+            <button class="btn btn-light" data-go="ai">اسأل المساعد</button>
+          </div>
         </div>
-        <div class="stats">
-          <div class="stat">▤ المواد الدراسية<strong id="homeSubjectsCount">0</strong><p>مواد أضفتها إلى منصتك</p></div>
-          <div class="stat">✓ المهام المتبقية<strong id="homeTasksCount">0</strong><p>مهام تحتاج إلى إنجاز</p></div>
-          <div class="stat">☆ العناصر المحفوظة<strong id="homeSavedCount">0</strong><p>محتوى يمكنك الرجوع إليه</p></div>
+        <div class="hero-mark">U</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">▤</div>
+          <strong id="subjectCount">0</strong>
+          <span>المواد الدراسية</span>
         </div>
-        <div class="content-grid">
-          <div class="panel">
-            <h3>ابدأ من هنا</h3>
-            <p class="muted">اختر ما تريد إنجازه الآن.</p>
-            <div class="inline-actions">
-              <button class="btn soft" data-go="tools">إضافة مهمة</button>
-              <button class="btn soft" data-go="library">تصفح المكتبة</button>
-              <button class="btn soft" data-go="ai">اسأل المساعد</button>
+        <div class="stat-card">
+          <div class="stat-icon">✓</div>
+          <strong id="taskCount">0</strong>
+          <span>المهام المسجلة</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">♡</div>
+          <strong id="savedCount">0</strong>
+          <span>العناصر المحفوظة</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <h3>ابدأ من هنا</h3>
+          <p>اختصارات لأهم أدواتك الجامعية.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="card">
+          <h4>📚 مكتبة الطلاب</h4>
+          <p>سجّل روابط ومراجع وملفات تساعدك في الوصول إلى مصادر دراستك.</p>
+          <div class="card-actions">
+            <button class="btn btn-primary" data-go="library">فتح المكتبة</button>
+          </div>
+        </div>
+        <div class="card">
+          <h4>📝 أدواتي وملاحظاتي</h4>
+          <p>اكتب المهام والملاحظات التي تريد الرجوع إليها لاحقًا.</p>
+          <div class="card-actions">
+            <button class="btn btn-primary" data-go="tools">فتح الأدوات</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- المواد الدراسية -->
+    <section class="section" id="subjects">
+      <div class="section-head">
+        <div>
+          <h3>المواد الدراسية</h3>
+          <p>أضف موادك ورتّبها بالطريقة التي تناسبك.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>إضافة مادة جديدة</h3>
+        <form id="subjectForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="subjectName">اسم المادة</label>
+              <input id="subjectName" required maxlength="100" placeholder="اكتب اسم المادة">
+            </div>
+            <div class="field">
+              <label for="subjectDescription">وصف المادة</label>
+              <input id="subjectDescription" maxlength="250" placeholder="وصف مختصر (اختياري)">
             </div>
           </div>
-          <div class="panel"><h3>مهامي القادمة</h3><div id="homeTasksList" class="item-list"></div></div>
-        </div>
-      </section>
+          <button class="btn btn-primary" type="submit">إضافة المادة</button>
+        </form>
+      </div>
 
-      <section class="section" id="subjects">
-        <div class="section-head"><div><h3>المواد الدراسية</h3><p>نظّم أسماء المواد والمحتوى المرتبط بها.</p></div></div>
-        <div class="panel">
-          <h3>إضافة مادة جديدة</h3>
-          <form id="subjectForm">
-            <div class="form-grid">
-              <div class="field"><label for="subjectName">اسم المادة</label><input id="subjectName" required placeholder="مثال: الفيزياء"></div>
-              <div class="field"><label for="subjectTeacher">اسم المحاضر (اختياري)</label><input id="subjectTeacher" placeholder="اسم المحاضر"></div>
+      <div class="item-list" id="subjectsList"></div>
+    </section>
+
+    <!-- المكتبة -->
+    <section class="section" id="library">
+      <div class="section-head">
+        <div>
+          <h3>مكتبة الطلاب</h3>
+          <p>اجمع روابط المصادر والمراجع التي تحتاجها.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>إضافة مصدر للمكتبة</h3>
+        <form id="libraryForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="resourceTitle">عنوان المصدر</label>
+              <input id="resourceTitle" required maxlength="120" placeholder="اسم الكتاب أو المصدر">
             </div>
-            <div class="field"><label for="subjectDescription">ملاحظات عن المادة</label><textarea id="subjectDescription" placeholder="موضوعات المادة أو ملاحظات مهمة"></textarea></div>
-            <button class="btn" type="submit">إضافة المادة</button>
-          </form>
-        </div>
-        <div class="toolbar"><input class="search-input" id="subjectSearch" placeholder="ابحث عن مادة..."></div>
-        <div class="item-list" id="subjectsList"></div>
-      </section>
-
-      <section class="section" id="library">
-        <div class="section-head"><div><h3>مكتبة الطلاب</h3><p>اجمع روابط المحاضرات والمراجع والملفات المهمة.</p></div></div>
-        <div class="panel">
-          <h3>إضافة مرجع أو رابط</h3>
-          <form id="libraryForm">
-            <div class="form-grid">
-              <div class="field"><label for="libraryTitle">عنوان المرجع</label><input id="libraryTitle" required placeholder="اسم المحاضرة أو المرجع"></div>
-              <div class="field"><label for="libraryCategory">التصنيف</label><select id="libraryCategory"><option>محاضرة</option><option>ملخص</option><option>مرجع</option><option>فيديو تعليمي</option><option>أخرى</option></select></div>
+            <div class="field">
+              <label for="resourceUrl">رابط المصدر</label>
+              <input id="resourceUrl" type="url" required placeholder="https://example.com">
             </div>
-            <div class="field"><label for="libraryUrl">الرابط (اختياري)</label><input id="libraryUrl" type="url" placeholder="https://..."></div>
-            <div class="field"><label for="libraryDescription">وصف مختصر</label><textarea id="libraryDescription" placeholder="محتوى المرجع أو ملاحظات عنه"></textarea></div>
-            <button class="btn" type="submit">حفظ المرجع</button>
-          </form>
-        </div>
-        <div class="toolbar"><input class="search-input" id="librarySearch" placeholder="ابحث في المكتبة..."></div>
-        <div class="item-list" id="libraryList"></div>
-      </section>
+          </div>
+          <div class="field">
+            <label for="resourceDescription">ملاحظات</label>
+            <textarea id="resourceDescription" maxlength="1000" placeholder="اكتب وصفًا للمصدر (اختياري)"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">حفظ المصدر</button>
+        </form>
+      </div>
 
-      <section class="section" id="community">
-        <div class="section-head"><div><h3>مجتمع الطلاب</h3><p>شارك سؤالًا أو فكرة أو نصيحة دراسية.</p></div></div>
+      <div class="item-list" id="libraryList"></div>
+    </section>
+
+    <!-- المجتمع -->
+    <section class="section" id="community">
+      <div class="section-head">
+        <div>
+          <h3>مجتمع الطلاب</h3>
+          <p>اكتب فكرة أو مشاركة واحفظها داخل المنصة.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>مشاركة جديدة</h3>
+        <form id="postForm">
+          <div class="field">
+            <label for="postTitle">عنوان المشاركة</label>
+            <input id="postTitle" required maxlength="120" placeholder="اكتب عنوانًا واضحًا">
+          </div>
+          <div class="field">
+            <label for="postContent">محتوى المشاركة</label>
+            <textarea id="postContent" required maxlength="3000" placeholder="اكتب مشاركتك هنا"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">نشر المشاركة</button>
+        </form>
+        <p class="muted">تنبيه: المشاركات في هذه النسخة محفوظة محليًا على الجهاز، وليست منشورات مشتركة بين جميع الطلاب.</p>
+      </div>
+
+      <div class="item-list" id="postsList"></div>
+    </section>
+
+    <!-- الأدوات -->
+    <section class="section" id="tools">
+      <div class="section-head">
+        <div>
+          <h3>أدواتي وملاحظاتي</h3>
+          <p>مكان واحد لمتابعة المهام وتسجيل الملاحظات.</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
         <div class="panel">
-          <h3>منشور جديد</h3>
-          <form id="postForm">
-            <div class="field"><label for="postTitle">عنوان المنشور</label><input id="postTitle" required placeholder="اكتب عنوانًا واضحًا"></div>
-            <div class="field"><label for="postContent">المحتوى</label><textarea id="postContent" required placeholder="شارك ما تريد أن يعرفه زملاؤك..."></textarea></div>
-            <button class="btn" type="submit">نشر المنشور</button>
-          </form>
-        </div>
-        <div class="item-list" id="communityList"></div>
-      </section>
-
-      <section class="section" id="tools">
-        <div class="section-head"><div><h3>أدواتي وملاحظاتي</h3><p>رتّب مهامك واحتفظ بملاحظاتك المهمة.</p></div></div>
-        <div class="content-grid">
-          <div class="panel">
-            <h3>إضافة مهمة</h3>
-            <form id="taskForm">
-              <div class="field"><label for="taskTitle">عنوان المهمة</label><input id="taskTitle" required placeholder="مثال: مراجعة المحاضرة"></div>
-              <div class="field"><label for="taskDate">موعد التسليم (اختياري)</label><input id="taskDate" type="date"></div>
-              <button class="btn" type="submit">إضافة المهمة</button>
-            </form>
-            <hr class="divider"><h3>قائمة المهام</h3><div class="item-list" id="tasksList"></div>
-          </div>
-          <div class="panel">
-            <h3>ملاحظة جديدة</h3>
-            <form id="noteForm">
-              <div class="field"><label for="noteTitle">عنوان الملاحظة</label><input id="noteTitle" required placeholder="عنوان الملاحظة"></div>
-              <div class="field"><label for="noteContent">المحتوى</label><textarea id="noteContent" required placeholder="اكتب ملاحظاتك هنا..."></textarea></div>
-              <button class="btn" type="submit">حفظ الملاحظة</button>
-            </form>
-            <hr class="divider"><h3>ملاحظاتي</h3><div class="item-list" id="notesList"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="saved">
-        <div class="section-head"><div><h3>المحفوظات</h3><p>العناصر التي تحفظها للرجوع إليها بسهولة.</p></div></div>
-        <div class="item-list" id="savedList"></div>
-      </section>
-
-      <section class="section" id="ai">
-        <div class="section-head"><div><h3>مساعد UniMate AI</h3><p>اطلب شرحًا لمفهوم دراسي أو مساعدة في فهم موضوع.</p></div></div>
-        <div class="panel chat-box">
-          <div class="chat-messages" id="chatMessages"><div class="message bot">أهلًا بك! اكتب سؤالك وسأساعدك في فهمه قدر الإمكان.</div></div>
-          <form class="chat-form" id="chatForm">
-            <input id="chatInput" required autocomplete="off" placeholder="اكتب سؤالك هنا...">
-            <button class="btn" id="sendChatBtn" type="submit">إرسال</button>
-          </form>
-        </div>
-        <p class="muted">راجع المعلومات المهمة من مصادرها الدراسية.</p>
-      </section>
-
-      <section class="section" id="account">
-        <div class="section-head"><div><h3>الحساب والملف الشخصي</h3><p>أنشئ حسابًا أو سجّل الدخول بالبريد الإلكتروني وكلمة المرور.</p></div></div>
-
-        <div class="panel" id="authPanel">
-          <h3>حسابك على UniMate</h3>
-          <div class="field"><label for="authName">الاسم</label><input id="authName" autocomplete="name" placeholder="الاسم الذي سيظهر في المنصة"></div>
-          <div class="field"><label for="authEmail">البريد الإلكتروني</label><input id="authEmail" type="email" autocomplete="email" required placeholder="name@example.com"></div>
-          <div class="field"><label for="authPassword">كلمة المرور</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="6 أحرف على الأقل"></div>
-          <div class="inline-actions">
-            <button class="btn" id="signupBtn" type="button">إنشاء حساب</button>
-            <button class="btn soft" id="loginBtn" type="button">تسجيل الدخول</button>
-          </div>
-          <div class="auth-status" id="authMessage" role="status" aria-live="polite">أنشئ حسابًا جديدًا أو سجّل الدخول إلى حسابك.</div>
-          <p class="muted">قد يطلب منك تأكيد بريدك الإلكتروني قبل تسجيل الدخول.</p>
-        </div>
-
-        <div class="panel" id="profilePanel" hidden>
-          <div class="profile-summary">
-            <div class="avatar" id="profileAvatar">ط</div>
-            <div><h3 id="profileDisplayName">حساب UniMate</h3><p id="profileDetails">تم تسجيل الدخول</p></div>
-          </div>
-          <div class="field"><label for="accountEmailDisplay">البريد الإلكتروني للحساب</label><input id="accountEmailDisplay" readonly></div>
-          <form id="profileForm">
-            <div class="field"><label for="profileName">الاسم الظاهر</label><input id="profileName" placeholder="اكتب اسمك"></div>
-            <div class="form-grid">
-              <div class="field"><label for="profileDepartment">التخصص</label><select id="profileDepartment"><option value="">اختر التخصص</option><option>تكنولوجيا المعلومات</option><option>تكنولوجيا الطاقة</option><option>تكنولوجيا الصناعة</option><option>تخصص آخر</option></select></div>
-              <div class="field"><label for="profileYear">الفرقة الدراسية</label><select id="profileYear"><option value="">اختر الفرقة</option><option>الفرقة الأولى</option><option>الفرقة الثانية</option><option>الفرقة الثالثة</option><option>الفرقة الرابعة</option></select></div>
+          <h3>إضافة مهمة</h3>
+          <form id="taskForm">
+            <div class="field">
+              <label for="taskTitle">عنوان المهمة</label>
+              <input id="taskTitle" required maxlength="150" placeholder="مثلًا: مراجعة المحاضرة">
             </div>
-            <button class="btn" type="submit">حفظ بيانات الملف</button>
+            <div class="field">
+              <label for="taskDate">الموعد (اختياري)</label>
+              <input id="taskDate" type="date">
+            </div>
+            <button class="btn btn-primary" type="submit">إضافة المهمة</button>
           </form>
-          <hr class="divider">
-          <button class="btn danger" id="logoutBtn" type="button">تسجيل الخروج</button>
         </div>
-      </section>
 
-      <section class="section" id="support">
-        <div class="section-head"><div><h3>الدعم الفني</h3><p>إذا واجهت مشكلة داخل المنصة يمكنك التواصل مع فريق الدعم.</p></div></div>
         <div class="panel">
-          <h3>كيف يمكننا المساعدة؟</h3>
-          <p class="muted">وضّح المشكلة التي تواجهك عند استخدام UniMate.</p>
-          <a class="btn" href="https://wa.me/201067330431" target="_blank" rel="noopener noreferrer">التواصل عبر واتساب</a>
+          <h3>إضافة ملاحظة</h3>
+          <form id="noteForm">
+            <div class="field">
+              <label for="noteTitle">عنوان الملاحظة</label>
+              <input id="noteTitle" required maxlength="150" placeholder="عنوان الملاحظة">
+            </div>
+            <div class="field">
+              <label for="noteContent">المحتوى</label>
+              <textarea id="noteContent" required maxlength="5000" placeholder="اكتب ملاحظتك هنا"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">حفظ الملاحظة</button>
+          </form>
         </div>
-      </section>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <h3>المهام</h3>
+          <p>يمكنك تحديد المهمة بعد الانتهاء منها.</p>
+        </div>
+      </div>
+      <div class="item-list" id="tasksList"></div>
+
+      <div class="section-head">
+        <div>
+          <h3>ملاحظاتي</h3>
+          <p>ملاحظاتك المسجلة في المنصة.</p>
+        </div>
+      </div>
+      <div class="item-list" id="notesList"></div>
+    </section>
+
+    <!-- المحفوظات -->
+    <section class="section" id="saved">
+      <div class="section-head">
+        <div>
+          <h3>المحفوظات</h3>
+          <p>ستجد هنا العناصر التي اخترت حفظها.</p>
+        </div>
+      </div>
+      <div class="item-list" id="savedList"></div>
+    </section>
+
+    <!-- مساعد الذكاء الاصطناعي -->
+    <section class="section" id="ai">
+      <div class="section-head">
+        <div>
+          <h3>مساعد UniMate AI</h3>
+          <p>اسأل عن موضوع دراسي أو اطلب شرحًا مبسطًا لمعلومة.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="chat-box" id="chatBox" aria-live="polite">
+          <div class="chat-message bot">أهلًا بك! اكتب سؤالك الدراسي وسأحاول مساعدتك.</div>
+        </div>
+
+        <form id="chatForm" class="chat-input">
+          <input id="chatQuestion" required maxlength="4000" placeholder="اكتب سؤالك هنا...">
+          <button class="btn btn-primary" id="chatSend" type="submit">إرسال</button>
+        </form>
+        <div id="chatMessage" class="message"></div>
+        <p class="muted">يحتاج المساعد إلى إعداد خدمة الذكاء الاصطناعي على الخادم. لا تضف مفتاح API داخل كود المتصفح.</p>
+      </div>
+    </section>
+
+    <!-- الملف الشخصي وتسجيل الدخول -->
+    <section class="section" id="account">
+      <div class="section-head">
+        <div>
+          <h3>الملف الشخصي</h3>
+          <p>إدارة بيانات الحساب والبيانات الدراسية.</p>
+        </div>
+      </div>
+
+      <div class="panel" id="authPanel">
+        <h3>حسابك على UniMate</h3>
+        <p>أنشئ حسابًا جديدًا أو سجّل الدخول باستخدام البريد الإلكتروني وكلمة المرور.</p>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" type="button" id="showSignup">إنشاء حساب</button>
+          <button class="auth-tab" type="button" id="showLogin">تسجيل الدخول</button>
+        </div>
+
+        <form id="authForm">
+          <div class="field" id="authNameWrap">
+            <label for="authName">الاسم</label>
+            <input id="authName" autocomplete="name" maxlength="100" placeholder="اكتب اسمك">
+          </div>
+
+          <div class="field">
+            <label for="authEmail">البريد الإلكتروني</label>
+            <input id="authEmail" type="email" autocomplete="email" required placeholder="name@example.com">
+          </div>
+
+          <div class="field">
+            <label for="authPassword">كلمة المرور</label>
+            <input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="ستة أحرف على الأقل">
+          </div>
+
+          <button class="btn btn-primary" id="authSubmit" type="submit">إنشاء حساب</button>
+          <div id="authMessage" class="message"></div>
+        </form>
+
+        <p class="muted">
+          إنشاء الحساب وتسجيل الدخول يحتاجان إلى إعداد Supabase بصورة صحيحة.
+          إذا كان تأكيد البريد الإلكتروني مفعّلًا، فقد تحتاج إلى تأكيد بريدك أولًا.
+        </p>
+      </div>
+
+      <div class="panel hidden" id="profilePanel">
+        <div class="account-status">
+          <strong>حالة الحساب:</strong> تم تسجيل الدخول.<br>
+          <span id="loggedInEmail"></span>
+        </div>
+
+        <h3>بياناتك الدراسية</h3>
+        <form id="profileForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="profileName">الاسم</label>
+              <input id="profileName" maxlength="100" placeholder="اكتب اسمك">
+            </div>
+
+            <!-- التخصص كتابة يدوية وليس قائمة منسدلة -->
+            <div class="field">
+              <label for="profileDepartment">التخصص</label>
+              <input id="profileDepartment" type="text" maxlength="120"
+                placeholder="اكتب تخصصك بنفسك">
+            </div>
+
+            <div class="field">
+              <label for="profileYear">الفرقة الدراسية</label>
+              <select id="profileYear">
+                <option value="">اختر الفرقة الدراسية</option>
+                <option value="الفرقة الأولى">الفرقة الأولى</option>
+                <option value="الفرقة الثانية">الفرقة الثانية</option>
+                <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+                <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+                <option value="فرقة أخرى">فرقة أخرى</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">حفظ البيانات</button>
+          <div id="profileMessage" class="message"></div>
+        </form>
+
+        <div class="card-actions">
+          <button class="btn btn-danger" id="logoutBtn" type="button">تسجيل الخروج</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- الدعم -->
+    <section class="section" id="support">
+      <div class="section-head">
+        <div>
+          <h3>الدعم الفني</h3>
+          <p>لو واجهتك مشكلة في استخدام UniMate، يمكنك التواصل مع الدعم.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>كيف يمكننا المساعدة؟</h3>
+        <p>يمكنك التواصل عبر واتساب للمساعدة في المشكلات المتعلقة بالمنصة.</p>
+        <a class="btn btn-primary" href="https://wa.me/201067330431" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none">
+          التواصل عبر واتساب
+        </a>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      UniMate · منصة طلابية لجامعة طيبة التكنولوجية
     </div>
   </main>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- مكتبة Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-(() => {
 "use strict";
 
-/*
-  استخدم رابط Supabase والمفتاح العام (Publishable أو anon) الخاصين بمشروعك.
-  لا تضع service_role أو أي مفتاح سري داخل HTML.
-*/
+/* =========================
+   إعدادات Supabase
+   استخدم رابط مشروعك والمفتاح العام الصحيح من إعدادات Supabase.
+   لا تستخدم service_role key في المتصفح.
+========================= */
+
 const SUPABASE_URL = "https://sidjmggbpnzkrjehvbih.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_dAkN-ptgqUWDyxsaoZrFkA_IBaChv71";
 
-const STORAGE_KEY = "unimate_community_v2";
-const sections = ["home","subjects","library","community","tools","saved","ai","account","support"];
-const titles = {
-  home:"الرئيسية",subjects:"المواد الدراسية",library:"مكتبة الطلاب",
-  community:"مجتمع الطلاب",tools:"أدواتي وملاحظاتي",saved:"المحفوظات",
-  ai:"مساعد UniMate AI",account:"الملف الشخصي",support:"الدعم الفني"
-};
-const $ = id => document.getElementById(id);
 let supabaseClient = null;
 let currentUser = null;
-let toastTimer;
+let authMode = "signup";
 
-function toast(message){
-  $("toast").textContent=message;
-  $("toast").classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2800);
-}
-function setAuthMessage(message,isError=false){
-  $("authMessage").textContent=message;
-  $("authMessage").classList.toggle("error",isError);
-}
-function setAuthBusy(busy){
-  $("signupBtn").disabled=busy;
-  $("loginBtn").disabled=busy;
-  $("signupBtn").textContent=busy?"جارٍ التنفيذ...":"إنشاء حساب";
-  $("loginBtn").textContent=busy?"جارٍ التنفيذ...":"تسجيل الدخول";
-}
-function defaultData(){
-  return {profile:{name:"",department:"",year:""},subjects:[],library:[],posts:[],tasks:[],notes:[],saved:[],chat:[]};
-}
-function loadData(){
-  try{
-    const parsed=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");
-    const base=defaultData();
-    if(!parsed)return base;
-    return {
-      ...base,...parsed,
-      profile:{...base.profile,...(parsed.profile||{})},
-      subjects:Array.isArray(parsed.subjects)?parsed.subjects:[],
-      library:Array.isArray(parsed.library)?parsed.library:[],
-      posts:Array.isArray(parsed.posts)?parsed.posts:[],
-      tasks:Array.isArray(parsed.tasks)?parsed.tasks:[],
-      notes:Array.isArray(parsed.notes)?parsed.notes:[],
-      saved:Array.isArray(parsed.saved)?parsed.saved:[],
-      chat:Array.isArray(parsed.chat)?parsed.chat:[]
-    };
-  }catch{return defaultData();}
-}
-let data=loadData();
-function saveData(){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));return true;}
-  catch{toast("تعذر حفظ البيانات في المتصفح.");return false;}
-}
-function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function safeUrl(value){
-  try{const u=new URL(value);return ["http:","https:"].includes(u.protocol)?u.href:"";}
-  catch{return "";}
-}
-function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
-
-function showSection(id){
-  if(!sections.includes(id))return;
-  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
-  $("pageTitle").textContent=titles[id]||"UniMate";
-  $("sidebar").classList.remove("open");
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>showSection(b.dataset.section)));
-document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showSection(b.dataset.go)));
-$("mobileMenu").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
-$("profileShortcut").addEventListener("click",()=>showSection("account"));
-
-function updateProfileUI(){
-  const name=data.profile.name||currentUser?.user_metadata?.full_name||"حساب UniMate";
-  const initial=name.trim().charAt(0)||"ط";
-  $("topName").textContent=name;
-  $("topAvatar").textContent=initial;
-  $("profileAvatar").textContent=initial;
-  $("profileDisplayName").textContent=name;
-  $("welcomeTitle").textContent=data.profile.name?`أهلًا بك، ${data.profile.name} 👋`:"أهلًا بك في UniMate 👋";
-  $("profileDetails").textContent=[data.profile.department,data.profile.year].filter(Boolean).join(" · ")||"جامعة طيبة التكنولوجية";
-  $("profileName").value=data.profile.name||currentUser?.user_metadata?.full_name||"";
-}
-function updateAuthUI(){
-  $("authPanel").hidden=!!currentUser;
-  $("profilePanel").hidden=!currentUser;
-  $("accountEmailDisplay").value=currentUser?.email||"";
-  if(currentUser)setAuthMessage("أنت مسجل الدخول بالفعل.");
-  else{
-    $("topName").textContent=data.profile.name||"زائر UniMate";
-    $("topAvatar").textContent=(data.profile.name||"ط").charAt(0);
+if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
+  try {
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+  } catch (error) {
+    console.error("Supabase initialization error:", error);
   }
-  updateProfileUI();
-}
-function emptyState(icon,message){
-  return `<div class="empty"><span>${icon}</span>${escapeHTML(message)}</div>`;
-}
-function actionButton(label,action,id,style="soft"){
-  return `<button type="button" class="btn small ${style}" data-action="${action}" data-id="${escapeHTML(id)}">${label}</button>`;
-}
-function renderStats(){
-  $("homeSubjectsCount").textContent=data.subjects.length;
-  $("homeTasksCount").textContent=data.tasks.filter(t=>!t.done).length;
-  $("homeSavedCount").textContent=data.saved.length;
-  const tasks=data.tasks.filter(t=>!t.done).slice(0,4);
-  $("homeTasksList").innerHTML=tasks.length?tasks.map(t=>`
-    <div class="card"><h4>${escapeHTML(t.title)}</h4><p>${t.date?"موعد التسليم: "+escapeHTML(t.date):"من دون موعد محدد"}</p>${actionButton("تم الإنجاز","complete-task",t.id)}</div>
-  `).join(""):emptyState("✓","لا توجد مهام متبقية حاليًا.");
-}
-function isSaved(type,id){return data.saved.some(x=>x.type===type&&x.id===id);}
-function toggleSaved(type,id){
-  if(isSaved(type,id)){
-    data.saved=data.saved.filter(x=>!(x.type===type&&x.id===id));
-    toast("تمت إزالة العنصر من المحفوظات.");
-  }else{
-    data.saved.unshift({type,id});
-    toast("تمت إضافة العنصر إلى المحفوظات.");
-  }
-  saveData();renderAll();
-}
-function removeItem(collection,id){
-  data[collection]=data[collection].filter(x=>x.id!==id);
-  data.saved=data.saved.filter(x=>!(x.type===collection&&x.id===id));
-  saveData();renderAll();toast("تم حذف العنصر.");
-}
-function renderSubjects(){
-  const q=$("subjectSearch").value.trim().toLowerCase();
-  const items=data.subjects.filter(x=>[x.name,x.teacher,x.description].join(" ").toLowerCase().includes(q));
-  $("subjectsList").innerHTML=items.length?items.map(x=>`
-    <article class="card"><span class="tag">مادة دراسية</span><h4>${escapeHTML(x.name)}</h4>
-    ${x.teacher?`<div class="card-meta">المحاضر: ${escapeHTML(x.teacher)}</div>`:""}
-    <p>${escapeHTML(x.description||"لا توجد ملاحظات إضافية.")}</p>
-    <div class="card-actions">${actionButton(isSaved("subjects",x.id)?"★ محفوظ":"☆ حفظ","save-subject",x.id)}${actionButton("حذف","delete-subject",x.id,"danger")}</div></article>
-  `).join(""):emptyState("▤",q?"لا توجد نتائج مطابقة.":"أضف أول مادة دراسية.");
-}
-function renderLibrary(){
-  const q=$("librarySearch").value.trim().toLowerCase();
-  const items=data.library.filter(x=>[x.title,x.category,x.description].join(" ").toLowerCase().includes(q));
-  $("libraryList").innerHTML=items.length?items.map(x=>{
-    const url=safeUrl(x.url);
-    return `<article class="card"><span class="tag">${escapeHTML(x.category)}</span><h4>${escapeHTML(x.title)}</h4><p>${escapeHTML(x.description||"لا يوجد وصف.")}</p>
-    <div class="card-actions">${url?`<a class="btn small" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">فتح الرابط ↗</a>`:""}${actionButton(isSaved("library",x.id)?"★ محفوظ":"☆ حفظ","save-library",x.id)}${actionButton("حذف","delete-library",x.id,"danger")}</div></article>`;
-  }).join(""):emptyState("▣",q?"لا توجد نتائج مطابقة.":"أضف روابط المحاضرات والمراجع هنا.");
-}
-function renderCommunity(){
-  $("communityList").innerHTML=data.posts.length?data.posts.map(x=>`
-    <article class="card"><span class="tag">مجتمع الطلاب</span><h4>${escapeHTML(x.title)}</h4><div class="card-meta">بواسطة ${escapeHTML(x.author||"طالب")} · ${escapeHTML(x.date||"")}</div><p>${escapeHTML(x.content)}</p>
-    <div class="card-actions">${actionButton(isSaved("posts",x.id)?"★ محفوظ":"☆ حفظ","save-post",x.id)}${actionButton("حذف","delete-post",x.id,"danger")}</div></article>
-  `).join(""):emptyState("♧","لا توجد منشورات حتى الآن.");
-}
-function renderTasks(){
-  $("tasksList").innerHTML=data.tasks.length?data.tasks.map(x=>`
-    <article class="card"><span class="tag">${x.done?"مكتملة":"قيد الإنجاز"}</span><h4>${escapeHTML(x.title)}</h4><p>${x.date?"موعد التسليم: "+escapeHTML(x.date):"لم يتم تحديد موعد."}</p>
-    <div class="card-actions">${actionButton(x.done?"إعادة فتح":"تم الإنجاز","complete-task",x.id)}${actionButton("حذف","delete-task",x.id,"danger")}</div></article>
-  `).join(""):emptyState("✓","لا توجد مهام بعد.");
-}
-function renderNotes(){
-  $("notesList").innerHTML=data.notes.length?data.notes.map(x=>`
-    <article class="card"><h4>${escapeHTML(x.title)}</h4><div class="card-meta">${escapeHTML(x.date||"")}</div><p>${escapeHTML(x.content)}</p>
-    <div class="card-actions">${actionButton(isSaved("notes",x.id)?"★ محفوظ":"☆ حفظ","save-note",x.id)}${actionButton("حذف","delete-note",x.id,"danger")}</div></article>
-  `).join(""):emptyState("✎","لا توجد ملاحظات محفوظة حتى الآن.");
-}
-function renderSaved(){
-  const map={subjects:"subjects",library:"library",posts:"posts",notes:"notes"};
-  const items=data.saved.map(s=>{
-    const collection=map[s.type];
-    const item=collection?data[collection].find(x=>x.id===s.id):null;
-    return item?{...item,savedType:s.type}:null;
-  }).filter(Boolean);
-  $("savedList").innerHTML=items.length?items.map(x=>`
-    <article class="card"><span class="tag">${({subjects:"مادة دراسية",library:"مرجع",posts:"منشور",notes:"ملاحظة"})[x.savedType]}</span>
-    <h4>${escapeHTML(x.name||x.title)}</h4><p>${escapeHTML(x.description||x.content||"عنصر محفوظ للرجوع إليه.")}</p>
-    ${actionButton("إزالة من المحفوظات","unsave-item",x.id,"danger")}</article>
-  `).join(""):emptyState("☆","لم تحفظ أي عناصر بعد.");
-}
-function renderChat(){
-  $("chatMessages").innerHTML=data.chat.length?data.chat.map(x=>`
-    <div class="message ${x.role==="user"?"user":"bot"}">${escapeHTML(x.text)}</div>
-  `).join(""):'<div class="message bot">أهلًا بك! اكتب سؤالك وسأساعدك في فهمه قدر الإمكان.</div>';
-  $("chatMessages").scrollTop=$("chatMessages").scrollHeight;
-}
-function renderAll(){
-  updateProfileUI();renderStats();renderSubjects();renderLibrary();
-  renderCommunity();renderTasks();renderNotes();renderSaved();renderChat();
 }
 
-$("profileForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  if(!currentUser)return toast("سجّل الدخول أولًا.");
-  data.profile={
-    name:$("profileName").value.trim(),
-    department:$("profileDepartment").value,
-    year:$("profileYear").value
+/* =========================
+   تخزين البيانات المحلية
+========================= */
+
+const STORAGE_KEY = "unimate_community_v2";
+
+function emptyData() {
+  return {
+    subjects: [],
+    library: [],
+    posts: [],
+    tasks: [],
+    notes: [],
+    saved: [],
+    profile: {
+      name: "",
+      department: "",
+      year: ""
+    }
   };
-  saveData();renderAll();toast("تم حفظ بيانات الملف الشخصي في هذا المتصفح.");
-});
-$("subjectForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  data.subjects.unshift({id:makeId(),name:$("subjectName").value.trim(),teacher:$("subjectTeacher").value.trim(),description:$("subjectDescription").value.trim()});
-  saveData();event.target.reset();renderAll();toast("تمت إضافة المادة.");
-});
-$("libraryForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  const rawUrl=$("libraryUrl").value.trim();
-  if(rawUrl&&!safeUrl(rawUrl))return toast("أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://");
-  data.library.unshift({id:makeId(),title:$("libraryTitle").value.trim(),category:$("libraryCategory").value,url:rawUrl,description:$("libraryDescription").value.trim()});
-  saveData();event.target.reset();renderAll();toast("تم حفظ المرجع.");
-});
-$("postForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  if(!currentUser)return toast("سجّل الدخول قبل نشر منشور.");
-  data.posts.unshift({id:makeId(),title:$("postTitle").value.trim(),content:$("postContent").value.trim(),author:data.profile.name||currentUser.user_metadata?.full_name||currentUser.email,date:new Date().toLocaleDateString("ar-EG")});
-  saveData();event.target.reset();renderAll();toast("تم نشر المنشور في هذا المتصفح.");
-});
-$("taskForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  data.tasks.unshift({id:makeId(),title:$("taskTitle").value.trim(),date:$("taskDate").value,done:false});
-  saveData();event.target.reset();renderAll();toast("تمت إضافة المهمة.");
-});
-$("noteForm").addEventListener("submit",event=>{
-  event.preventDefault();
-  data.notes.unshift({id:makeId(),title:$("noteTitle").value.trim(),content:$("noteContent").value.trim(),date:new Date().toLocaleDateString("ar-EG")});
-  saveData();event.target.reset();renderAll();toast("تم حفظ الملاحظة.");
-});
-$("subjectSearch").addEventListener("input",renderSubjects);
-$("librarySearch").addEventListener("input",renderLibrary);
+}
 
-document.addEventListener("click",event=>{
-  const b=event.target.closest("[data-action]");
-  if(!b)return;
-  const {action,id}=b.dataset;
-  const saves={"save-subject":"subjects","save-library":"library","save-post":"posts","save-note":"notes"};
-  if(saves[action])return toggleSaved(saves[action],id);
-  const deletes={"delete-subject":"subjects","delete-library":"library","delete-post":"posts","delete-task":"tasks","delete-note":"notes"};
-  if(deletes[action]){
-    if(confirm("هل تريد حذف هذا العنصر؟"))removeItem(deletes[action],id);
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return emptyData();
+
+    const parsed = JSON.parse(raw);
+    const defaults = emptyData();
+
+    return {
+      ...defaults,
+      ...parsed,
+      subjects: Array.isArray(parsed.subjects) ? parsed.subjects : [],
+      library: Array.isArray(parsed.library) ? parsed.library : [],
+      posts: Array.isArray(parsed.posts) ? parsed.posts : [],
+      tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+      notes: Array.isArray(parsed.notes) ? parsed.notes : [],
+      saved: Array.isArray(parsed.saved) ? parsed.saved : [],
+      profile: {
+        ...defaults.profile,
+        ...(parsed.profile || {})
+      }
+    };
+  } catch (error) {
+    console.error("Local data could not be loaded:", error);
+    return emptyData();
+  }
+}
+
+let data = loadData();
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    console.error("Local data could not be saved:", error);
+    alert("تعذر حفظ البيانات على هذا الجهاز. تحقق من مساحة التخزين وإعدادات المتصفح.");
+    return false;
+  }
+}
+
+function createId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function (char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char];
+  });
+}
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+  } catch (_) {}
+  return "";
+}
+
+function showMessage(elementId, message, type = "success") {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  element.textContent = message;
+  element.className = "message show " + type;
+}
+
+function clearMessage(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  element.textContent = "";
+  element.className = "message";
+}
+
+/* =========================
+   التنقل بين الأقسام
+========================= */
+
+const sectionTitles = {
+  home: "الرئيسية",
+  subjects: "المواد الدراسية",
+  library: "مكتبة الطلاب",
+  community: "مجتمع الطلاب",
+  tools: "أدواتي وملاحظاتي",
+  saved: "المحفوظات",
+  ai: "مساعد UniMate AI",
+  account: "الملف الشخصي",
+  support: "الدعم الفني"
+};
+
+function showSection(sectionId) {
+  if (!sectionTitles[sectionId]) return;
+
+  document.querySelectorAll(".section").forEach(function (section) {
+    section.classList.toggle("active", section.id === sectionId);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(function (button) {
+    button.classList.toggle("active", button.dataset.section === sectionId);
+  });
+
+  document.getElementById("pageTitle").textContent = sectionTitles[sectionId];
+  document.getElementById("sidebar").classList.remove("open");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("[data-section]").forEach(function (button) {
+  button.addEventListener("click", function () {
+    showSection(button.dataset.section);
+  });
+});
+
+document.querySelectorAll("[data-go]").forEach(function (button) {
+  button.addEventListener("click", function () {
+    showSection(button.dataset.go);
+  });
+});
+
+document.getElementById("mobileMenu").addEventListener("click", function () {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* =========================
+   المحفوظات
+========================= */
+
+function isSaved(type, id) {
+  return data.saved.some(function (item) {
+    return item.type === type && item.id === id;
+  });
+}
+
+function toggleSaved(type, id, title, description) {
+  const index = data.saved.findIndex(function (item) {
+    return item.type === type && item.id === id;
+  });
+
+  if (index >= 0) {
+    data.saved.splice(index, 1);
+  } else {
+    data.saved.unshift({
+      id: id,
+      type: type,
+      title: title,
+      description: description || ""
+    });
+  }
+
+  saveData();
+  renderAll();
+}
+
+function renderSaved() {
+  const container = document.getElementById("savedList");
+
+  if (!data.saved.length) {
+    container.innerHTML = '<div class="empty-state">لا توجد عناصر محفوظة حتى الآن.</div>';
     return;
   }
-  if(action==="complete-task"){
-    const task=data.tasks.find(x=>x.id===id);
-    if(task){task.done=!task.done;saveData();renderAll();toast(task.done?"تم إنجاز المهمة.":"أعيد فتح المهمة.");}
-  }
-  if(action==="unsave-item"){
-    const savedItem=data.saved.find(x=>x.id===id);
-    if(savedItem){
-      data.saved=data.saved.filter(x=>!(x.id===id&&x.type===savedItem.type));
-      saveData();renderAll();toast("تمت إزالة العنصر من المحفوظات.");
-    }
-  }
-});
 
-/* إنشاء حساب باستخدام Supabase Auth */
-$("signupBtn").addEventListener("click",async()=>{
-  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. راجع إعدادات Supabase.",true);
-  const name=$("authName").value.trim();
-  const email=$("authEmail").value.trim();
-  const password=$("authPassword").value;
-  if(!name)return setAuthMessage("اكتب اسمك أولًا.",true);
-  if(!email)return setAuthMessage("اكتب البريد الإلكتروني.",true);
-  if(password.length<6)return setAuthMessage("كلمة المرور يجب ألا تقل عن 6 أحرف.",true);
+  container.innerHTML = data.saved.map(function (item) {
+    return `
+      <div class="list-item">
+        <div>
+          <span class="tag">${escapeHTML(item.type)}</span>
+          <h4>${escapeHTML(item.title)}</h4>
+          <p>${escapeHTML(item.description)}</p>
+        </div>
+        <button class="btn btn-danger btn-small" data-unsave="${escapeHTML(item.id)}" data-type="${escapeHTML(item.type)}">إزالة</button>
+      </div>
+    `;
+  }).join("");
 
-  setAuthBusy(true);
-  try{
-    const {data:result,error}=await supabaseClient.auth.signUp({
-      email,password,options:{data:{full_name:name}}
+  container.querySelectorAll("[data-unsave]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const id = button.dataset.unsave;
+      const type = button.dataset.type;
+      data.saved = data.saved.filter(function (item) {
+        return !(item.id === id && item.type === type);
+      });
+      saveData();
+      renderAll();
     });
-    if(error)throw error;
-    if(result.session){
-      currentUser=result.user;
-      data.profile.name=name;
-      saveData();updateAuthUI();renderAll();
-      setAuthMessage("تم إنشاء الحساب وتسجيل الدخول بنجاح.");
-      toast("أهلًا بك في UniMate.");
-      showSection("home");
-    }else{
-      setAuthMessage("تم إرسال طلب إنشاء الحساب. افتح رسالة التأكيد إذا كان تأكيد البريد مفعّلًا في Supabase، ثم سجّل الدخول.");
-    }
-  }catch(error){
-    setAuthMessage(error.message||"تعذر إنشاء الحساب. حاول مرة أخرى.",true);
-  }finally{setAuthBusy(false);}
-});
-
-/* تسجيل الدخول */
-$("loginBtn").addEventListener("click",async()=>{
-  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. راجع إعدادات Supabase.",true);
-  const email=$("authEmail").value.trim();
-  const password=$("authPassword").value;
-  if(!email||!password)return setAuthMessage("أدخل البريد الإلكتروني وكلمة المرور.",true);
-
-  setAuthBusy(true);
-  try{
-    const {data:result,error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error)throw error;
-    currentUser=result.user;
-    const name=currentUser.user_metadata?.full_name;
-    if(name&&!data.profile.name)data.profile.name=name;
-    saveData();updateAuthUI();renderAll();
-    setAuthMessage("تم تسجيل الدخول بنجاح.");
-    toast("أهلًا بك في UniMate.");
-    showSection("home");
-  }catch(error){
-    setAuthMessage(error.message||"تعذر تسجيل الدخول. راجع بياناتك وحاول مرة أخرى.",true);
-  }finally{setAuthBusy(false);}
-});
-
-/* تسجيل الخروج */
-$("logoutBtn").addEventListener("click",async()=>{
-  if(!supabaseClient||!currentUser)return;
-  $("logoutBtn").disabled=true;
-  try{
-    const {error}=await supabaseClient.auth.signOut();
-    if(error)throw error;
-    currentUser=null;updateAuthUI();renderAll();
-    setAuthMessage("تم تسجيل الخروج.");
-    toast("تم تسجيل الخروج.");showSection("home");
-  }catch(error){
-    toast(error.message||"تعذر تسجيل الخروج.");
-  }finally{$("logoutBtn").disabled=false;}
-});
-
-/* مساعد الذكاء الاصطناعي: يتصل بواجهة /api/chat الموجودة في المشروع */
-async function askAssistant(question){
-  const response=await fetch("/api/chat",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:question})
   });
-  const result=await response.json().catch(()=>({}));
-  if(!response.ok)throw new Error(result.error||"تعذر الحصول على رد.");
-  const answer=result.reply||result.response||result.text||
-    result.message?.content||
-    result.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("\n");
-  if(!answer)throw new Error("وصل رد غير متوقع من المساعد.");
-  return answer;
 }
-$("chatForm").addEventListener("submit",async event=>{
+
+/* =========================
+   المواد الدراسية
+========================= */
+
+document.getElementById("subjectForm").addEventListener("submit", function (event) {
   event.preventDefault();
-  const input=$("chatInput");
-  const question=input.value.trim();
-  if(!question)return;
-  data.chat.push({role:"user",text:question});
-  saveData();input.value="";renderChat();
-  const btn=$("sendChatBtn");
-  btn.disabled=true;btn.textContent="جارٍ الرد...";
-  const waiting=document.createElement("div");
-  waiting.className="message bot";
-  waiting.textContent="جارٍ تجهيز الرد...";
-  waiting.id="aiWaiting";
-  $("chatMessages").appendChild(waiting);
-  try{
-    const answer=await askAssistant(question);
-    data.chat.push({role:"assistant",text:answer});
-    saveData();renderChat();
-  }catch(error){
-    console.error("UniMate AI:",error);
-    $("aiWaiting")?.remove();
-    data.chat.push({role:"assistant",text:"تعذر الحصول على الرد الآن. تأكد من الإنترنت وإعدادات /api/chat في Vercel، ثم حاول مرة أخرى."});
-    saveData();renderChat();
-  }finally{
-    btn.disabled=false;btn.textContent="إرسال";input.focus();
+
+  const name = document.getElementById("subjectName").value.trim();
+  const description = document.getElementById("subjectDescription").value.trim();
+
+  if (!name) return;
+
+  data.subjects.unshift({
+    id: createId(),
+    name: name,
+    description: description,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  this.reset();
+  renderAll();
+});
+
+function renderSubjects() {
+  const container = document.getElementById("subjectsList");
+
+  if (!data.subjects.length) {
+    container.innerHTML = '<div class="empty-state">لم تضف أي مادة بعد. أضف أول مادة من النموذج أعلاه.</div>';
+    return;
+  }
+
+  container.innerHTML = data.subjects.map(function (item) {
+    const saved = isSaved("مادة", item.id);
+    return `
+      <div class="list-item">
+        <div>
+          <h4>${escapeHTML(item.name)}</h4>
+          <p>${escapeHTML(item.description || "لا يوجد وصف للمادة.")}</p>
+        </div>
+        <div class="card-actions" style="margin-top:0">
+          <button class="btn btn-light btn-small" data-save-subject="${escapeHTML(item.id)}">${saved ? "إزالة من المحفوظات" : "حفظ"}</button>
+          <button class="btn btn-danger btn-small" data-delete-subject="${escapeHTML(item.id)}">حذف</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-save-subject]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = data.subjects.find(x => x.id === button.dataset.saveSubject);
+      if (item) toggleSaved("مادة", item.id, item.name, item.description);
+    });
+  });
+
+  container.querySelectorAll("[data-delete-subject]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const id = button.dataset.deleteSubject;
+      data.subjects = data.subjects.filter(x => x.id !== id);
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+/* =========================
+   مكتبة الطلاب
+========================= */
+
+document.getElementById("libraryForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const title = document.getElementById("resourceTitle").value.trim();
+  const url = safeUrl(document.getElementById("resourceUrl").value.trim());
+  const description = document.getElementById("resourceDescription").value.trim();
+
+  if (!title || !url) {
+    alert("اكتب عنوان المصدر ورابطًا صحيحًا يبدأ بـ http أو https.");
+    return;
+  }
+
+  data.library.unshift({
+    id: createId(),
+    title: title,
+    url: url,
+    description: description,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  this.reset();
+  renderAll();
+});
+
+function renderLibrary() {
+  const container = document.getElementById("libraryList");
+
+  if (!data.library.length) {
+    container.innerHTML = '<div class="empty-state">المكتبة فارغة حاليًا. أضف أول مصدر من النموذج أعلاه.</div>';
+    return;
+  }
+
+  container.innerHTML = data.library.map(function (item) {
+    const saved = isSaved("مصدر", item.id);
+    return `
+      <div class="list-item">
+        <div>
+          <h4>${escapeHTML(item.title)}</h4>
+          <p>${escapeHTML(item.description || "مصدر دراسي")}</p>
+          <div class="card-actions">
+            <a class="btn btn-light btn-small" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">فتح المصدر</a>
+            <button class="btn btn-light btn-small" data-save-resource="${escapeHTML(item.id)}">${saved ? "إزالة من المحفوظات" : "حفظ"}</button>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-small" data-delete-resource="${escapeHTML(item.id)}">حذف</button>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-save-resource]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = data.library.find(x => x.id === button.dataset.saveResource);
+      if (item) toggleSaved("مصدر", item.id, item.title, item.description);
+    });
+  });
+
+  container.querySelectorAll("[data-delete-resource]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const id = button.dataset.deleteResource;
+      data.library = data.library.filter(x => x.id !== id);
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+/* =========================
+   مجتمع الطلاب
+========================= */
+
+document.getElementById("postForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const title = document.getElementById("postTitle").value.trim();
+  const content = document.getElementById("postContent").value.trim();
+
+  if (!title || !content) return;
+
+  data.posts.unshift({
+    id: createId(),
+    title: title,
+    content: content,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  this.reset();
+  renderAll();
+});
+
+function renderPosts() {
+  const container = document.getElementById("postsList");
+
+  if (!data.posts.length) {
+    container.innerHTML = '<div class="empty-state">لا توجد مشاركات حتى الآن.</div>';
+    return;
+  }
+
+  container.innerHTML = data.posts.map(function (item) {
+    const saved = isSaved("مشاركة", item.id);
+    return `
+      <div class="list-item">
+        <div>
+          <h4>${escapeHTML(item.title)}</h4>
+          <p>${escapeHTML(item.content)}</p>
+          <div class="card-actions">
+            <button class="btn btn-light btn-small" data-save-post="${escapeHTML(item.id)}">${saved ? "إزالة من المحفوظات" : "حفظ المشاركة"}</button>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-small" data-delete-post="${escapeHTML(item.id)}">حذف</button>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-save-post]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = data.posts.find(x => x.id === button.dataset.savePost);
+      if (item) toggleSaved("مشاركة", item.id, item.title, item.content);
+    });
+  });
+
+  container.querySelectorAll("[data-delete-post]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const id = button.dataset.deletePost;
+      data.posts = data.posts.filter(x => x.id !== id);
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+/* =========================
+   المهام والملاحظات
+========================= */
+
+document.getElementById("taskForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const title = document.getElementById("taskTitle").value.trim();
+  const date = document.getElementById("taskDate").value;
+
+  if (!title) return;
+
+  data.tasks.unshift({
+    id: createId(),
+    title: title,
+    date: date,
+    done: false,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  this.reset();
+  renderAll();
+});
+
+document.getElementById("noteForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const title = document.getElementById("noteTitle").value.trim();
+  const content = document.getElementById("noteContent").value.trim();
+
+  if (!title || !content) return;
+
+  data.notes.unshift({
+    id: createId(),
+    title: title,
+    content: content,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  this.reset();
+  renderAll();
+});
+
+function renderTasks() {
+  const container = document.getElementById("tasksList");
+
+  if (!data.tasks.length) {
+    container.innerHTML = '<div class="empty-state">لا توجد مهام مسجلة حاليًا.</div>';
+  } else {
+    container.innerHTML = data.tasks.map(function (item) {
+      return `
+        <div class="list-item">
+          <div>
+            <h4 style="${item.done ? "text-decoration:line-through;opacity:.65" : ""}">${escapeHTML(item.title)}</h4>
+            <p>${item.date ? "الموعد: " + escapeHTML(item.date) : "لم يتم تحديد موعد"}</p>
+            <div class="card-actions">
+              <button class="btn btn-light btn-small" data-toggle-task="${escapeHTML(item.id)}">${item.done ? "إلغاء الإنجاز" : "تم الإنجاز"}</button>
+            </div>
+          </div>
+          <button class="btn btn-danger btn-small" data-delete-task="${escapeHTML(item.id)}">حذف</button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  container.querySelectorAll("[data-toggle-task]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = data.tasks.find(x => x.id === button.dataset.toggleTask);
+      if (item) item.done = !item.done;
+      saveData();
+      renderAll();
+    });
+  });
+
+  container.querySelectorAll("[data-delete-task]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      data.tasks = data.tasks.filter(x => x.id !== button.dataset.deleteTask);
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+function renderNotes() {
+  const container = document.getElementById("notesList");
+
+  if (!data.notes.length) {
+    container.innerHTML = '<div class="empty-state">لا توجد ملاحظات محفوظة حاليًا.</div>';
+    return;
+  }
+
+  container.innerHTML = data.notes.map(function (item) {
+    const saved = isSaved("ملاحظة", item.id);
+    return `
+      <div class="list-item">
+        <div>
+          <h4>${escapeHTML(item.title)}</h4>
+          <p>${escapeHTML(item.content)}</p>
+          <div class="card-actions">
+            <button class="btn btn-light btn-small" data-save-note="${escapeHTML(item.id)}">${saved ? "إزالة من المحفوظات" : "حفظ الملاحظة"}</button>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-small" data-delete-note="${escapeHTML(item.id)}">حذف</button>
+      </div>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-save-note]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const item = data.notes.find(x => x.id === button.dataset.saveNote);
+      if (item) toggleSaved("ملاحظة", item.id, item.title, item.content);
+    });
+  });
+
+  container.querySelectorAll("[data-delete-note]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      data.notes = data.notes.filter(x => x.id !== button.dataset.deleteNote);
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+/* =========================
+   الملف الشخصي
+========================= */
+
+function renderProfile() {
+  const authPanel = document.getElementById("authPanel");
+  const profilePanel = document.getElementById("profilePanel");
+
+  if (currentUser) {
+    authPanel.classList.add("hidden");
+    profilePanel.classList.remove("hidden");
+
+    document.getElementById("loggedInEmail").textContent =
+      currentUser.email || "";
+
+    document.getElementById("profileName").value =
+      data.profile.name || currentUser.user_metadata?.name || "";
+
+    // التخصص هنا حقل نصي حر، وليس قائمة اختيارات.
+    document.getElementById("profileDepartment").value =
+      data.profile.department || "";
+
+    document.getElementById("profileYear").value =
+      data.profile.year || "";
+
+    const name = data.profile.name || currentUser.user_metadata?.name || "U";
+    document.getElementById("topAvatar").textContent = name.trim().charAt(0) || "U";
+  } else {
+    authPanel.classList.remove("hidden");
+    profilePanel.classList.add("hidden");
+    document.getElementById("topAvatar").textContent = "U";
+  }
+}
+
+document.getElementById("profileForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  data.profile = {
+    name: document.getElementById("profileName").value.trim(),
+    department: document.getElementById("profileDepartment").value.trim(),
+    year: document.getElementById("profileYear").value
+  };
+
+  saveData();
+  renderProfile();
+
+  showMessage(
+    "profileMessage",
+    "تم حفظ بيانات الملف الشخصي على هذا الجهاز.",
+    "success"
+  );
+});
+
+/* =========================
+   تسجيل الحساب والدخول
+========================= */
+
+function setAuthMode(mode) {
+  authMode = mode;
+
+  const isSignup = mode === "signup";
+  document.getElementById("showSignup").classList.toggle("active", isSignup);
+  document.getElementById("showLogin").classList.toggle("active", !isSignup);
+  document.getElementById("authNameWrap").classList.toggle("hidden", !isSignup);
+  document.getElementById("authName").required = isSignup;
+  document.getElementById("authSubmit").textContent =
+    isSignup ? "إنشاء حساب" : "تسجيل الدخول";
+  document.getElementById("authPassword").autocomplete =
+    isSignup ? "new-password" : "current-password";
+
+  clearMessage("authMessage");
+}
+
+document.getElementById("showSignup").addEventListener("click", function () {
+  setAuthMode("signup");
+});
+
+document.getElementById("showLogin").addEventListener("click", function () {
+  setAuthMode("login");
+});
+
+document.getElementById("authForm").addEventListener("submit", async function (event) {
+  event.preventDefault();
+  clearMessage("authMessage");
+
+  if (!supabaseClient) {
+    showMessage(
+      "authMessage",
+      "تعذر الاتصال بإعدادات Supabase. راجع رابط المشروع والمفتاح العام في الكود.",
+      "error"
+    );
+    return;
+  }
+
+  const name = document.getElementById("authName").value.trim();
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  const submitButton = document.getElementById("authSubmit");
+  submitButton.disabled = true;
+  submitButton.textContent = "جارٍ المعالجة...";
+
+  try {
+    if (authMode === "signup") {
+      if (!name) {
+        throw new Error("اكتب الاسم أولًا.");
+      }
+
+      const result = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            name: name
+          }
+        }
+      });
+
+      if (result.error) throw result.error;
+
+      if (result.data.session) {
+        currentUser = result.data.user;
+        data.profile.name = name;
+        saveData();
+        renderProfile();
+
+        showMessage(
+          "authMessage",
+          "تم إنشاء الحساب وتسجيل الدخول بنجاح.",
+          "success"
+        );
+      } else {
+        showMessage(
+          "authMessage",
+          "تم إرسال طلب إنشاء الحساب. إذا كان تأكيد البريد مفعّلًا، افتح بريدك الإلكتروني وأكّد الحساب قبل تسجيل الدخول.",
+          "success"
+        );
+      }
+    } else {
+      const result = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (result.error) throw result.error;
+
+      currentUser = result.data.user;
+
+      const metadataName = currentUser?.user_metadata?.name || "";
+      if (metadataName && !data.profile.name) {
+        data.profile.name = metadataName;
+        saveData();
+      }
+
+      renderProfile();
+      showMessage("authMessage", "تم تسجيل الدخول بنجاح.", "success");
+    }
+  } catch (error) {
+    console.error("Authentication error:", error);
+    showMessage(
+      "authMessage",
+      "تعذر إكمال العملية: " + (error.message || "حدث خطأ غير معروف."),
+      "error"
+    );
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent =
+      authMode === "signup" ? "إنشاء حساب" : "تسجيل الدخول";
   }
 });
 
-/* تهيئة Supabase واستعادة جلسة تسجيل الدخول */
-try{
-  if(!window.supabase)throw new Error("لم يتم تحميل مكتبة Supabase.");
-  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-  supabaseClient.auth.onAuthStateChange((_event,session)=>{
-    currentUser=session?.user||null;
-    updateAuthUI();
-  });
-  supabaseClient.auth.getSession().then(({data:result,error})=>{
-    if(error)throw error;
-    currentUser=result.session?.user||null;
-    updateAuthUI();
-  }).catch(error=>{
-    console.error("Supabase session:",error);
-    setAuthMessage("تعذر التحقق من الجلسة. تحقق من اتصال الإنترنت وإعدادات Supabase.",true);
-  });
-}catch(error){
-  console.error("Supabase initialization:",error);
-  setAuthMessage("لم يتم الاتصال بـ Supabase. تحقق من رابط المشروع والمفتاح العام.",true);
+document.getElementById("logoutBtn").addEventListener("click", async function () {
+  if (!supabaseClient) return;
+
+  const result = await supabaseClient.auth.signOut();
+
+  if (result.error) {
+    alert("تعذر تسجيل الخروج: " + result.error.message);
+    return;
+  }
+
+  currentUser = null;
+  renderProfile();
+  setAuthMode("login");
+  showSection("home");
+});
+
+async function initializeAuth() {
+  if (!supabaseClient) {
+    renderProfile();
+    return;
+  }
+
+  try {
+    const result = await supabaseClient.auth.getSession();
+
+    if (result.error) throw result.error;
+    currentUser = result.data.session?.user || null;
+
+    renderProfile();
+
+    supabaseClient.auth.onAuthStateChange(function (_event, session) {
+      currentUser = session?.user || null;
+      renderProfile();
+    });
+  } catch (error) {
+    console.error("Could not restore session:", error);
+    renderProfile();
+  }
+}
+
+/* =========================
+   مساعد UniMate AI
+========================= */
+
+function addChatMessage(text, sender) {
+  const box = document.getElementById("chatBox");
+  const message = document.createElement("div");
+  message.className = "chat-message " + sender;
+  message.textContent = text;
+  box.appendChild(message);
+  box.scrollTop = box.scrollHeight;
+  return message;
+}
+
+document.getElementById("chatForm").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const input = document.getElementById("chatQuestion");
+  const sendButton = document.getElementById("chatSend");
+  const question = input.value.trim();
+
+  if (!question) return;
+
+  clearMessage("chatMessage");
+  addChatMessage(question, "user");
+  input.value = "";
+
+  const waitingMessage = addChatMessage("جارٍ تجهيز الرد...", "bot");
+  sendButton.disabled = true;
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: question
+      })
+    });
+
+    let result = {};
+
+    try {
+      result = await response.json();
+    } catch (_) {
+      throw new Error("وصل رد غير مفهوم من الخادم.");
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        result.error || result.message || "تعذر الحصول على رد من المساعد."
+      );
+    }
+
+    const reply =
+      result.reply ||
+      result.response ||
+      result.text ||
+      result.message ||
+      result.answer;
+
+    if (typeof reply !== "string" || !reply.trim()) {
+      throw new Error("الخادم لم يُرجع نصًا للرد. راجع إعدادات api/chat.js.");
+    }
+
+    waitingMessage.textContent = reply;
+  } catch (error) {
+    console.error("UniMate AI error:", error);
+    waitingMessage.textContent =
+      "تعذر الحصول على الرد حاليًا. تحقق من اتصال الإنترنت وإعدادات خدمة AI على Vercel.";
+  } finally {
+    sendButton.disabled = false;
+    input.focus();
+  }
+});
+
+/* =========================
+   تحديث الصفحة والإحصائيات
+========================= */
+
+function renderAll() {
+  renderSubjects();
+  renderLibrary();
+  renderPosts();
+  renderTasks();
+  renderNotes();
+  renderSaved();
+  renderProfile();
+
+  document.getElementById("subjectCount").textContent = data.subjects.length;
+  document.getElementById("taskCount").textContent =
+    data.tasks.filter(task => !task.done).length;
+  document.getElementById("savedCount").textContent = data.saved.length;
 }
 
 renderAll();
-updateAuthUI();
-})();
+initializeAuth();
+setAuthMode("signup");
 </script>
 </body>
 </html>
