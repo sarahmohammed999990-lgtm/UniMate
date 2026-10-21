@@ -7,6 +7,10 @@
 <meta name="theme-color" content="#315C5A">
 <title>UniMate | جامعة طيبة التكنولوجية</title>
 
+<!-- أيقونة الموقع في تبويب المتصفح -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='23' fill='%23315C5A'/%3E%3Ctext x='50' y='68' font-size='59' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EU%3C/text%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,17 +18,29 @@
 
 <style>
 :root{
-  --primary:#315C5A;--dark:#234443;--soft:#DCE8E4;
-  --bg:#F7F8F6;--white:#fff;--text:#243432;
-  --muted:#74817C;--border:#E5EAE6;--danger:#B54747;
+  --primary:#315C5A;
+  --dark:#234443;
+  --soft:#DCE8E4;
+  --bg:#F7F8F6;
+  --white:#FFFFFF;
+  --text:#263633;
+  --muted:#74817C;
+  --border:#E5EAE6;
+  --danger:#B54747;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:"Tajawal",sans-serif;background:var(--bg);color:var(--text)}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.sidebar{position:fixed;right:0;top:0;width:245px;height:100vh;background:white;border-left:1px solid var(--border);padding:23px 16px;overflow:auto;z-index:20}
+[hidden]{display:none!important}
+
+.sidebar{
+ position:fixed;right:0;top:0;width:245px;height:100vh;
+ background:white;border-left:1px solid var(--border);
+ padding:23px 16px;overflow-y:auto;z-index:20
+}
 .brand{display:flex;align-items:center;gap:11px;padding:0 7px 23px;border-bottom:1px solid var(--border);margin-bottom:18px}
-.brand-mark{width:43px;height:43px;border-radius:13px;background:var(--primary);color:white;display:grid;place-items:center;font-weight:800;font-size:20px}
+.brand-mark{width:43px;height:43px;border-radius:13px;background:var(--primary);color:white;display:grid;place-items:center;font-weight:800;font-size:22px}
 .brand h1{margin:0;color:var(--dark);font-size:22px}
 .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
 .nav-label{font-size:12px;color:var(--muted);padding:8px 12px}
@@ -32,6 +48,7 @@ button{cursor:pointer}
 .nav-btn:hover,.nav-btn.active{background:var(--soft);color:var(--dark);font-weight:700}
 .nav-icon{width:24px;text-align:center;font-size:18px}
 .sidebar-footer{background:#F3F6F3;padding:13px;border-radius:13px;color:var(--muted);font-size:12px;line-height:1.8;margin-top:22px}
+
 .main{margin-right:245px;min-height:100vh}
 .topbar{min-height:75px;background:white;border-bottom:1px solid var(--border);padding:13px 27px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}
 .topbar h2{margin:0;font-size:20px}
@@ -52,6 +69,7 @@ button{cursor:pointer}
 .btn.danger{background:#F9E8E7;color:var(--danger)}
 .btn.small{padding:7px 10px;font-size:13px}
 .btn:disabled{opacity:.6;cursor:not-allowed}
+
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}
 .stat,.panel,.card{background:white;border:1px solid var(--border);border-radius:17px;box-shadow:0 7px 25px #2344430a}
 .stat{padding:20px}
@@ -67,8 +85,8 @@ button{cursor:pointer}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
 .field input,.field textarea,.field select,.search-input{
-  width:100%;border:1px solid #DDE5E0;background:#FCFDFC;
-  border-radius:10px;padding:12px;color:var(--text)
+ width:100%;border:1px solid #DDE5E0;background:#FCFDFC;
+ border-radius:10px;padding:12px;color:var(--text)
 }
 .field textarea{min-height:95px;resize:vertical}
 .field input:focus,.field textarea:focus,.field select:focus{outline:2px solid #DCE8E4;border-color:var(--primary)}
@@ -101,18 +119,19 @@ button{cursor:pointer}
 .toast{position:fixed;bottom:20px;left:20px;z-index:100;background:var(--dark);color:white;padding:13px 18px;border-radius:11px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw}
 .toast.show{opacity:1}
 .mobile-menu{display:none}
+
 @media(max-width:950px){
-  .sidebar{width:220px}.main{margin-right:220px}.content{padding:20px}
+ .sidebar{width:220px}.main{margin-right:220px}.content{padding:20px}
 }
 @media(max-width:720px){
-  .sidebar{transform:translateX(100%);transition:.25s;box-shadow:none}
-  .sidebar.open{transform:translateX(0);box-shadow:0 0 0 100vmax #0005}
-  .main{margin-right:0}.topbar{padding:12px}
-  .mobile-menu{display:grid;place-items:center;width:39px;height:39px;border:1px solid var(--border);border-radius:10px;background:white;font-size:19px}
-  .topbar h2{font-size:17px}.topbar p{max-width:230px}
-  .user-name{display:none}.content{padding:14px}
-  .stats,.content-grid,.item-list,.form-grid{grid-template-columns:1fr}
-  .welcome{padding:22px}.welcome h2{font-size:23px}.panel{padding:16px}
+ .sidebar{transform:translateX(100%);transition:.25s;box-shadow:none}
+ .sidebar.open{transform:translateX(0);box-shadow:0 0 0 100vmax #0005}
+ .main{margin-right:0}.topbar{padding:12px}
+ .mobile-menu{display:grid;place-items:center;width:39px;height:39px;border:1px solid var(--border);border-radius:10px;background:white;font-size:19px}
+ .topbar h2{font-size:17px}.topbar p{max-width:230px}
+ .user-name{display:none}.content{padding:14px}
+ .stats,.content-grid,.item-list,.form-grid{grid-template-columns:1fr}
+ .welcome{padding:22px}.welcome h2{font-size:23px}.panel{padding:16px}
 }
 </style>
 </head>
@@ -143,10 +162,14 @@ button{cursor:pointer}
     <header class="topbar">
       <div class="topbar-left">
         <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
-        <div><h2 id="pageTitle">الرئيسية</h2><p>جامعة طيبة التكنولوجية · كلية تكنولوجيا الصناعة والطاقة</p></div>
+        <div>
+          <h2 id="pageTitle">الرئيسية</h2>
+          <p>جامعة طيبة التكنولوجية · كلية تكنولوجيا الصناعة والطاقة</p>
+        </div>
       </div>
       <button class="user-chip" id="profileShortcut" type="button">
-        <span class="avatar" id="topAvatar">ط</span><span class="user-name" id="topName">زائر UniMate</span>
+        <span class="avatar" id="topAvatar">ط</span>
+        <span class="user-name" id="topName">زائر UniMate</span>
       </button>
     </header>
 
@@ -158,19 +181,28 @@ button{cursor:pointer}
           <button class="btn light" data-go="subjects">استكشف المواد الدراسية ←</button>
         </div>
         <div class="stats">
-          <div class="stat"><span class="stat-icon">▤</span>المواد الدراسية<strong id="homeSubjectsCount">0</strong><p>مواد أضفتها إلى منصتك</p></div>
-          <div class="stat"><span class="stat-icon">✓</span>المهام المتبقية<strong id="homeTasksCount">0</strong><p>مهام تحتاج إلى إنجاز</p></div>
-          <div class="stat"><span class="stat-icon">☆</span>العناصر المحفوظة<strong id="homeSavedCount">0</strong><p>محتوى يمكنك الرجوع إليه</p></div>
+          <div class="stat">▤ المواد الدراسية<strong id="homeSubjectsCount">0</strong><p>مواد أضفتها إلى منصتك</p></div>
+          <div class="stat">✓ المهام المتبقية<strong id="homeTasksCount">0</strong><p>مهام تحتاج إلى إنجاز</p></div>
+          <div class="stat">☆ العناصر المحفوظة<strong id="homeSavedCount">0</strong><p>محتوى يمكنك الرجوع إليه</p></div>
         </div>
         <div class="content-grid">
-          <div class="panel"><h3>ابدأ من هنا</h3><p class="muted">اختر ما تريد إنجازه الآن.</p><div class="inline-actions"><button class="btn soft" data-go="tools">إضافة مهمة</button><button class="btn soft" data-go="library">تصفح المكتبة</button><button class="btn soft" data-go="ai">اسأل المساعد</button></div></div>
+          <div class="panel">
+            <h3>ابدأ من هنا</h3>
+            <p class="muted">اختر ما تريد إنجازه الآن.</p>
+            <div class="inline-actions">
+              <button class="btn soft" data-go="tools">إضافة مهمة</button>
+              <button class="btn soft" data-go="library">تصفح المكتبة</button>
+              <button class="btn soft" data-go="ai">اسأل المساعد</button>
+            </div>
+          </div>
           <div class="panel"><h3>مهامي القادمة</h3><div id="homeTasksList" class="item-list"></div></div>
         </div>
       </section>
 
       <section class="section" id="subjects">
         <div class="section-head"><div><h3>المواد الدراسية</h3><p>نظّم أسماء المواد والمحتوى المرتبط بها.</p></div></div>
-        <div class="panel"><h3>إضافة مادة جديدة</h3>
+        <div class="panel">
+          <h3>إضافة مادة جديدة</h3>
           <form id="subjectForm">
             <div class="form-grid">
               <div class="field"><label for="subjectName">اسم المادة</label><input id="subjectName" required placeholder="مثال: الفيزياء"></div>
@@ -186,7 +218,8 @@ button{cursor:pointer}
 
       <section class="section" id="library">
         <div class="section-head"><div><h3>مكتبة الطلاب</h3><p>اجمع روابط المحاضرات والمراجع والملفات المهمة.</p></div></div>
-        <div class="panel"><h3>إضافة مرجع أو رابط</h3>
+        <div class="panel">
+          <h3>إضافة مرجع أو رابط</h3>
           <form id="libraryForm">
             <div class="form-grid">
               <div class="field"><label for="libraryTitle">عنوان المرجع</label><input id="libraryTitle" required placeholder="اسم المحاضرة أو المرجع"></div>
@@ -203,7 +236,8 @@ button{cursor:pointer}
 
       <section class="section" id="community">
         <div class="section-head"><div><h3>مجتمع الطلاب</h3><p>شارك سؤالًا أو فكرة أو نصيحة دراسية.</p></div></div>
-        <div class="panel"><h3>منشور جديد</h3>
+        <div class="panel">
+          <h3>منشور جديد</h3>
           <form id="postForm">
             <div class="field"><label for="postTitle">عنوان المنشور</label><input id="postTitle" required placeholder="اكتب عنوانًا واضحًا"></div>
             <div class="field"><label for="postContent">المحتوى</label><textarea id="postContent" required placeholder="شارك ما تريد أن يعرفه زملاؤك..."></textarea></div>
@@ -216,7 +250,8 @@ button{cursor:pointer}
       <section class="section" id="tools">
         <div class="section-head"><div><h3>أدواتي وملاحظاتي</h3><p>رتّب مهامك واحتفظ بملاحظاتك المهمة.</p></div></div>
         <div class="content-grid">
-          <div class="panel"><h3>إضافة مهمة</h3>
+          <div class="panel">
+            <h3>إضافة مهمة</h3>
             <form id="taskForm">
               <div class="field"><label for="taskTitle">عنوان المهمة</label><input id="taskTitle" required placeholder="مثال: مراجعة المحاضرة"></div>
               <div class="field"><label for="taskDate">موعد التسليم (اختياري)</label><input id="taskDate" type="date"></div>
@@ -224,7 +259,8 @@ button{cursor:pointer}
             </form>
             <hr class="divider"><h3>قائمة المهام</h3><div class="item-list" id="tasksList"></div>
           </div>
-          <div class="panel"><h3>ملاحظة جديدة</h3>
+          <div class="panel">
+            <h3>ملاحظة جديدة</h3>
             <form id="noteForm">
               <div class="field"><label for="noteTitle">عنوان الملاحظة</label><input id="noteTitle" required placeholder="عنوان الملاحظة"></div>
               <div class="field"><label for="noteContent">المحتوى</label><textarea id="noteContent" required placeholder="اكتب ملاحظاتك هنا..."></textarea></div>
@@ -244,7 +280,10 @@ button{cursor:pointer}
         <div class="section-head"><div><h3>مساعد UniMate AI</h3><p>اطلب شرحًا لمفهوم دراسي أو مساعدة في فهم موضوع.</p></div></div>
         <div class="panel chat-box">
           <div class="chat-messages" id="chatMessages"><div class="message bot">أهلًا بك! اكتب سؤالك وسأساعدك في فهمه قدر الإمكان.</div></div>
-          <form class="chat-form" id="chatForm"><input id="chatInput" required autocomplete="off" placeholder="اكتب سؤالك هنا..."><button class="btn" id="sendChatBtn" type="submit">إرسال</button></form>
+          <form class="chat-form" id="chatForm">
+            <input id="chatInput" required autocomplete="off" placeholder="اكتب سؤالك هنا...">
+            <button class="btn" id="sendChatBtn" type="submit">إرسال</button>
+          </form>
         </div>
         <p class="muted">راجع المعلومات المهمة من مصادرها الدراسية.</p>
       </section>
@@ -262,12 +301,15 @@ button{cursor:pointer}
             <button class="btn soft" id="loginBtn" type="button">تسجيل الدخول</button>
           </div>
           <div class="auth-status" id="authMessage" role="status" aria-live="polite">أنشئ حسابًا جديدًا أو سجّل الدخول إلى حسابك.</div>
-          <p class="muted">استخدم بريدك وكلمة مرورك الخاصة. لا تشارك كلمة المرور مع أي شخص.</p>
+          <p class="muted">قد يطلب منك تأكيد بريدك الإلكتروني قبل تسجيل الدخول.</p>
         </div>
 
         <div class="panel" id="profilePanel" hidden>
-          <div class="profile-summary"><div class="avatar" id="profileAvatar">ط</div><div><h3 id="profileDisplayName">حساب UniMate</h3><p id="profileDetails">تم تسجيل الدخول</p></div></div>
-          <div class="field"><label>البريد الإلكتروني للحساب</label><input id="accountEmailDisplay" readonly></div>
+          <div class="profile-summary">
+            <div class="avatar" id="profileAvatar">ط</div>
+            <div><h3 id="profileDisplayName">حساب UniMate</h3><p id="profileDetails">تم تسجيل الدخول</p></div>
+          </div>
+          <div class="field"><label for="accountEmailDisplay">البريد الإلكتروني للحساب</label><input id="accountEmailDisplay" readonly></div>
           <form id="profileForm">
             <div class="field"><label for="profileName">الاسم الظاهر</label><input id="profileName" placeholder="اكتب اسمك"></div>
             <div class="form-grid">
@@ -283,7 +325,11 @@ button{cursor:pointer}
 
       <section class="section" id="support">
         <div class="section-head"><div><h3>الدعم الفني</h3><p>إذا واجهت مشكلة داخل المنصة يمكنك التواصل مع فريق الدعم.</p></div></div>
-        <div class="panel"><h3>كيف يمكننا المساعدة؟</h3><p class="muted">وضّح المشكلة التي تواجهك عند استخدام UniMate.</p><a class="btn" href="https://wa.me/201067330431" target="_blank" rel="noopener noreferrer">التواصل عبر واتساب</a></div>
+        <div class="panel">
+          <h3>كيف يمكننا المساعدة؟</h3>
+          <p class="muted">وضّح المشكلة التي تواجهك عند استخدام UniMate.</p>
+          <a class="btn" href="https://wa.me/201067330431" target="_blank" rel="noopener noreferrer">التواصل عبر واتساب</a>
+        </div>
       </section>
     </div>
   </main>
@@ -294,7 +340,10 @@ button{cursor:pointer}
 (() => {
 "use strict";
 
-/* إعداد Supabase */
+/*
+  استخدم رابط Supabase والمفتاح العام (Publishable أو anon) الخاصين بمشروعك.
+  لا تضع service_role أو أي مفتاح سري داخل HTML.
+*/
 const SUPABASE_URL = "https://sidjmggbpnzkrjehvbih.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_dAkN-ptgqUWDyxsaoZrFkA_IBaChv71";
 
@@ -305,46 +354,38 @@ const titles = {
   community:"مجتمع الطلاب",tools:"أدواتي وملاحظاتي",saved:"المحفوظات",
   ai:"مساعد UniMate AI",account:"الملف الشخصي",support:"الدعم الفني"
 };
-
 const $ = id => document.getElementById(id);
 let supabaseClient = null;
 let currentUser = null;
 let toastTimer;
 
-function toast(message) {
-  $("toast").textContent = message;
+function toast(message){
+  $("toast").textContent=message;
   $("toast").classList.add("show");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2800);
+  toastTimer=setTimeout(()=>$("toast").classList.remove("show"),2800);
 }
-
-function setAuthMessage(message, isError = false) {
-  $("authMessage").textContent = message;
-  $("authMessage").classList.toggle("error", isError);
+function setAuthMessage(message,isError=false){
+  $("authMessage").textContent=message;
+  $("authMessage").classList.toggle("error",isError);
 }
-
-function setAuthBusy(busy) {
-  $("signupBtn").disabled = busy;
-  $("loginBtn").disabled = busy;
-  $("signupBtn").textContent = busy ? "جارٍ التنفيذ..." : "إنشاء حساب";
-  $("loginBtn").textContent = busy ? "جارٍ التنفيذ..." : "تسجيل الدخول";
+function setAuthBusy(busy){
+  $("signupBtn").disabled=busy;
+  $("loginBtn").disabled=busy;
+  $("signupBtn").textContent=busy?"جارٍ التنفيذ...":"إنشاء حساب";
+  $("loginBtn").textContent=busy?"جارٍ التنفيذ...":"تسجيل الدخول";
 }
-
-function defaultData() {
-  return {
-    profile:{name:"",department:"",year:""},
-    subjects:[],library:[],posts:[],tasks:[],notes:[],saved:[],chat:[]
-  };
+function defaultData(){
+  return {profile:{name:"",department:"",year:""},subjects:[],library:[],posts:[],tasks:[],notes:[],saved:[],chat:[]};
 }
-
-function loadData() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-    const base = defaultData();
-    if (!parsed) return base;
+function loadData(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");
+    const base=defaultData();
+    if(!parsed)return base;
     return {
       ...base,...parsed,
-      profile:{...base.profile,...(parsed.profile || {})},
+      profile:{...base.profile,...(parsed.profile||{})},
       subjects:Array.isArray(parsed.subjects)?parsed.subjects:[],
       library:Array.isArray(parsed.library)?parsed.library:[],
       posts:Array.isArray(parsed.posts)?parsed.posts:[],
@@ -353,244 +394,187 @@ function loadData() {
       saved:Array.isArray(parsed.saved)?parsed.saved:[],
       chat:Array.isArray(parsed.chat)?parsed.chat:[]
     };
-  } catch { return defaultData(); }
+  }catch{return defaultData();}
 }
-
-let data = loadData();
-
-function saveData() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    return true;
-  } catch {
-    toast("تعذر حفظ البيانات في المتصفح.");
-    return false;
-  }
+let data=loadData();
+function saveData(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));return true;}
+  catch{toast("تعذر حفظ البيانات في المتصفح.");return false;}
 }
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
-function safeUrl(value) {
-  try {
-    const u = new URL(value);
-    return ["http:","https:"].includes(u.protocol) ? u.href : "";
-  } catch { return ""; }
+function safeUrl(value){
+  try{const u=new URL(value);return ["http:","https:"].includes(u.protocol)?u.href:"";}
+  catch{return "";}
 }
+function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 
-function makeId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
-}
-
-function showSection(id) {
-  if (!sections.includes(id)) return;
-  document.querySelectorAll(".section").forEach(s => s.classList.toggle("active",s.id===id));
-  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active",b.dataset.section===id));
-  $("pageTitle").textContent = titles[id] || "UniMate";
+function showSection(id){
+  if(!sections.includes(id))return;
+  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
+  $("pageTitle").textContent=titles[id]||"UniMate";
   $("sidebar").classList.remove("open");
   window.scrollTo({top:0,behavior:"smooth"});
 }
-
-document.querySelectorAll("[data-section]").forEach(b => b.addEventListener("click",()=>showSection(b.dataset.section)));
-document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click",()=>showSection(b.dataset.go)));
+document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>showSection(b.dataset.section)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showSection(b.dataset.go)));
 $("mobileMenu").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
 $("profileShortcut").addEventListener("click",()=>showSection("account"));
 
-function updateProfileUI() {
-  const name = data.profile.name || currentUser?.user_metadata?.full_name || "حساب UniMate";
-  const initial = name.trim().charAt(0) || "ط";
-  $("topName").textContent = name;
-  $("topAvatar").textContent = initial;
-  $("profileAvatar").textContent = initial;
-  $("profileDisplayName").textContent = name;
-  $("welcomeTitle").textContent = data.profile.name ? `أهلًا بك، ${data.profile.name} 👋` : "أهلًا بك في UniMate 👋";
-  $("profileDetails").textContent = [data.profile.department,data.profile.year].filter(Boolean).join(" · ") || "جامعة طيبة التكنولوجية";
-  $("profileName").value = data.profile.name || currentUser?.user_metadata?.full_name || "";
-  $("profileDepartment").value = data.profile.department || "";
-  $("profileYear").value = data.profile.year || "";
+function updateProfileUI(){
+  const name=data.profile.name||currentUser?.user_metadata?.full_name||"حساب UniMate";
+  const initial=name.trim().charAt(0)||"ط";
+  $("topName").textContent=name;
+  $("topAvatar").textContent=initial;
+  $("profileAvatar").textContent=initial;
+  $("profileDisplayName").textContent=name;
+  $("welcomeTitle").textContent=data.profile.name?`أهلًا بك، ${data.profile.name} 👋`:"أهلًا بك في UniMate 👋";
+  $("profileDetails").textContent=[data.profile.department,data.profile.year].filter(Boolean).join(" · ")||"جامعة طيبة التكنولوجية";
+  $("profileName").value=data.profile.name||currentUser?.user_metadata?.full_name||"";
 }
-
-function updateAuthUI() {
-  $("authPanel").hidden = !!currentUser;
-  $("profilePanel").hidden = !currentUser;
-  $("accountEmailDisplay").value = currentUser?.email || "";
-  if (currentUser) {
-    setAuthMessage("أنت مسجل الدخول بالفعل.");
-  } else {
-    $("topName").textContent = data.profile.name || "زائر UniMate";
-    $("topAvatar").textContent = (data.profile.name || "ط").charAt(0);
+function updateAuthUI(){
+  $("authPanel").hidden=!!currentUser;
+  $("profilePanel").hidden=!currentUser;
+  $("accountEmailDisplay").value=currentUser?.email||"";
+  if(currentUser)setAuthMessage("أنت مسجل الدخول بالفعل.");
+  else{
+    $("topName").textContent=data.profile.name||"زائر UniMate";
+    $("topAvatar").textContent=(data.profile.name||"ط").charAt(0);
   }
   updateProfileUI();
 }
-
-function emptyState(icon,message) {
+function emptyState(icon,message){
   return `<div class="empty"><span>${icon}</span>${escapeHTML(message)}</div>`;
 }
-
-function actionButton(label,action,id,style="soft") {
+function actionButton(label,action,id,style="soft"){
   return `<button type="button" class="btn small ${style}" data-action="${action}" data-id="${escapeHTML(id)}">${label}</button>`;
 }
-
-function renderStats() {
-  $("homeSubjectsCount").textContent = data.subjects.length;
-  $("homeTasksCount").textContent = data.tasks.filter(t=>!t.done).length;
-  $("homeSavedCount").textContent = data.saved.length;
-  const tasks = data.tasks.filter(t=>!t.done).slice(0,4);
-  $("homeTasksList").innerHTML = tasks.length ? tasks.map(t=>`
+function renderStats(){
+  $("homeSubjectsCount").textContent=data.subjects.length;
+  $("homeTasksCount").textContent=data.tasks.filter(t=>!t.done).length;
+  $("homeSavedCount").textContent=data.saved.length;
+  const tasks=data.tasks.filter(t=>!t.done).slice(0,4);
+  $("homeTasksList").innerHTML=tasks.length?tasks.map(t=>`
     <div class="card"><h4>${escapeHTML(t.title)}</h4><p>${t.date?"موعد التسليم: "+escapeHTML(t.date):"من دون موعد محدد"}</p>${actionButton("تم الإنجاز","complete-task",t.id)}</div>
-  `).join("") : emptyState("✓","لا توجد مهام متبقية حاليًا.");
+  `).join(""):emptyState("✓","لا توجد مهام متبقية حاليًا.");
 }
-
-function isSaved(type,id) {
-  return data.saved.some(x=>x.type===type && x.id===id);
-}
-
-function toggleSaved(type,id) {
-  if (isSaved(type,id)) {
-    data.saved = data.saved.filter(x=>!(x.type===type && x.id===id));
+function isSaved(type,id){return data.saved.some(x=>x.type===type&&x.id===id);}
+function toggleSaved(type,id){
+  if(isSaved(type,id)){
+    data.saved=data.saved.filter(x=>!(x.type===type&&x.id===id));
     toast("تمت إزالة العنصر من المحفوظات.");
-  } else {
+  }else{
     data.saved.unshift({type,id});
     toast("تمت إضافة العنصر إلى المحفوظات.");
   }
-  saveData();
-  renderAll();
+  saveData();renderAll();
 }
-
-function removeItem(collection,id) {
-  data[collection] = data[collection].filter(x=>x.id!==id);
-  data.saved = data.saved.filter(x=>!(x.type===collection && x.id===id));
-  saveData();
-  renderAll();
-  toast("تم حذف العنصر.");
+function removeItem(collection,id){
+  data[collection]=data[collection].filter(x=>x.id!==id);
+  data.saved=data.saved.filter(x=>!(x.type===collection&&x.id===id));
+  saveData();renderAll();toast("تم حذف العنصر.");
 }
-
-function renderSubjects() {
-  const q = $("subjectSearch").value.trim().toLowerCase();
-  const items = data.subjects.filter(x=>[x.name,x.teacher,x.description].join(" ").toLowerCase().includes(q));
-  $("subjectsList").innerHTML = items.length ? items.map(x=>`
+function renderSubjects(){
+  const q=$("subjectSearch").value.trim().toLowerCase();
+  const items=data.subjects.filter(x=>[x.name,x.teacher,x.description].join(" ").toLowerCase().includes(q));
+  $("subjectsList").innerHTML=items.length?items.map(x=>`
     <article class="card"><span class="tag">مادة دراسية</span><h4>${escapeHTML(x.name)}</h4>
     ${x.teacher?`<div class="card-meta">المحاضر: ${escapeHTML(x.teacher)}</div>`:""}
     <p>${escapeHTML(x.description||"لا توجد ملاحظات إضافية.")}</p>
     <div class="card-actions">${actionButton(isSaved("subjects",x.id)?"★ محفوظ":"☆ حفظ","save-subject",x.id)}${actionButton("حذف","delete-subject",x.id,"danger")}</div></article>
-  `).join("") : emptyState("▤",q?"لا توجد نتائج مطابقة.":"أضف أول مادة دراسية.");
+  `).join(""):emptyState("▤",q?"لا توجد نتائج مطابقة.":"أضف أول مادة دراسية.");
 }
-
-function renderLibrary() {
-  const q = $("librarySearch").value.trim().toLowerCase();
-  const items = data.library.filter(x=>[x.title,x.category,x.description].join(" ").toLowerCase().includes(q));
-  $("libraryList").innerHTML = items.length ? items.map(x=>{
-    const url = safeUrl(x.url);
+function renderLibrary(){
+  const q=$("librarySearch").value.trim().toLowerCase();
+  const items=data.library.filter(x=>[x.title,x.category,x.description].join(" ").toLowerCase().includes(q));
+  $("libraryList").innerHTML=items.length?items.map(x=>{
+    const url=safeUrl(x.url);
     return `<article class="card"><span class="tag">${escapeHTML(x.category)}</span><h4>${escapeHTML(x.title)}</h4><p>${escapeHTML(x.description||"لا يوجد وصف.")}</p>
-      <div class="card-actions">${url?`<a class="btn small" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">فتح الرابط ↗</a>`:""}${actionButton(isSaved("library",x.id)?"★ محفوظ":"☆ حفظ","save-library",x.id)}${actionButton("حذف","delete-library",x.id,"danger")}</div></article>`;
-  }).join("") : emptyState("▣",q?"لا توجد نتائج مطابقة.":"أضف روابط المحاضرات والمراجع هنا.");
+    <div class="card-actions">${url?`<a class="btn small" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">فتح الرابط ↗</a>`:""}${actionButton(isSaved("library",x.id)?"★ محفوظ":"☆ حفظ","save-library",x.id)}${actionButton("حذف","delete-library",x.id,"danger")}</div></article>`;
+  }).join(""):emptyState("▣",q?"لا توجد نتائج مطابقة.":"أضف روابط المحاضرات والمراجع هنا.");
 }
-
-function renderCommunity() {
-  $("communityList").innerHTML = data.posts.length ? data.posts.map(x=>`
+function renderCommunity(){
+  $("communityList").innerHTML=data.posts.length?data.posts.map(x=>`
     <article class="card"><span class="tag">مجتمع الطلاب</span><h4>${escapeHTML(x.title)}</h4><div class="card-meta">بواسطة ${escapeHTML(x.author||"طالب")} · ${escapeHTML(x.date||"")}</div><p>${escapeHTML(x.content)}</p>
     <div class="card-actions">${actionButton(isSaved("posts",x.id)?"★ محفوظ":"☆ حفظ","save-post",x.id)}${actionButton("حذف","delete-post",x.id,"danger")}</div></article>
-  `).join("") : emptyState("♧","لا توجد منشورات حتى الآن.");
+  `).join(""):emptyState("♧","لا توجد منشورات حتى الآن.");
 }
-
-function renderTasks() {
-  $("tasksList").innerHTML = data.tasks.length ? data.tasks.map(x=>`
+function renderTasks(){
+  $("tasksList").innerHTML=data.tasks.length?data.tasks.map(x=>`
     <article class="card"><span class="tag">${x.done?"مكتملة":"قيد الإنجاز"}</span><h4>${escapeHTML(x.title)}</h4><p>${x.date?"موعد التسليم: "+escapeHTML(x.date):"لم يتم تحديد موعد."}</p>
     <div class="card-actions">${actionButton(x.done?"إعادة فتح":"تم الإنجاز","complete-task",x.id)}${actionButton("حذف","delete-task",x.id,"danger")}</div></article>
-  `).join("") : emptyState("✓","لا توجد مهام بعد.");
+  `).join(""):emptyState("✓","لا توجد مهام بعد.");
 }
-
-function renderNotes() {
-  $("notesList").innerHTML = data.notes.length ? data.notes.map(x=>`
+function renderNotes(){
+  $("notesList").innerHTML=data.notes.length?data.notes.map(x=>`
     <article class="card"><h4>${escapeHTML(x.title)}</h4><div class="card-meta">${escapeHTML(x.date||"")}</div><p>${escapeHTML(x.content)}</p>
     <div class="card-actions">${actionButton(isSaved("notes",x.id)?"★ محفوظ":"☆ حفظ","save-note",x.id)}${actionButton("حذف","delete-note",x.id,"danger")}</div></article>
-  `).join("") : emptyState("✎","لا توجد ملاحظات محفوظة حتى الآن.");
+  `).join(""):emptyState("✎","لا توجد ملاحظات محفوظة حتى الآن.");
 }
-
-function renderSaved() {
-  const map = {subjects:"subjects",library:"library",posts:"posts",notes:"notes"};
-  const items = data.saved.map(s=>{
-    const collection = map[s.type];
-    const item = collection ? data[collection].find(x=>x.id===s.id) : null;
-    return item ? {...item,savedType:s.type} : null;
+function renderSaved(){
+  const map={subjects:"subjects",library:"library",posts:"posts",notes:"notes"};
+  const items=data.saved.map(s=>{
+    const collection=map[s.type];
+    const item=collection?data[collection].find(x=>x.id===s.id):null;
+    return item?{...item,savedType:s.type}:null;
   }).filter(Boolean);
-
-  $("savedList").innerHTML = items.length ? items.map(x=>`
+  $("savedList").innerHTML=items.length?items.map(x=>`
     <article class="card"><span class="tag">${({subjects:"مادة دراسية",library:"مرجع",posts:"منشور",notes:"ملاحظة"})[x.savedType]}</span>
     <h4>${escapeHTML(x.name||x.title)}</h4><p>${escapeHTML(x.description||x.content||"عنصر محفوظ للرجوع إليه.")}</p>
     ${actionButton("إزالة من المحفوظات","unsave-item",x.id,"danger")}</article>
-  `).join("") : emptyState("☆","لم تحفظ أي عناصر بعد.");
+  `).join(""):emptyState("☆","لم تحفظ أي عناصر بعد.");
 }
-
-function renderChat() {
-  const messages = data.chat;
-  $("chatMessages").innerHTML = messages.length ? messages.map(x=>`
+function renderChat(){
+  $("chatMessages").innerHTML=data.chat.length?data.chat.map(x=>`
     <div class="message ${x.role==="user"?"user":"bot"}">${escapeHTML(x.text)}</div>
-  `).join("") : '<div class="message bot">أهلًا بك! اكتب سؤالك وسأساعدك في فهمه قدر الإمكان.</div>';
-  $("chatMessages").scrollTop = $("chatMessages").scrollHeight;
+  `).join(""):'<div class="message bot">أهلًا بك! اكتب سؤالك وسأساعدك في فهمه قدر الإمكان.</div>';
+  $("chatMessages").scrollTop=$("chatMessages").scrollHeight;
 }
-
-function renderAll() {
-  updateProfileUI();
-  renderStats();
-  renderSubjects();
-  renderLibrary();
-  renderCommunity();
-  renderTasks();
-  renderNotes();
-  renderSaved();
-  renderChat();
+function renderAll(){
+  updateProfileUI();renderStats();renderSubjects();renderLibrary();
+  renderCommunity();renderTasks();renderNotes();renderSaved();renderChat();
 }
 
 $("profileForm").addEventListener("submit",event=>{
   event.preventDefault();
-  if (!currentUser) return toast("سجّل الدخول أولًا.");
-  data.profile = {
+  if(!currentUser)return toast("سجّل الدخول أولًا.");
+  data.profile={
     name:$("profileName").value.trim(),
     department:$("profileDepartment").value,
     year:$("profileYear").value
   };
-  saveData();
-  renderAll();
-  toast("تم حفظ بيانات الملف الشخصي في هذا المتصفح.");
+  saveData();renderAll();toast("تم حفظ بيانات الملف الشخصي في هذا المتصفح.");
 });
-
 $("subjectForm").addEventListener("submit",event=>{
   event.preventDefault();
   data.subjects.unshift({id:makeId(),name:$("subjectName").value.trim(),teacher:$("subjectTeacher").value.trim(),description:$("subjectDescription").value.trim()});
   saveData();event.target.reset();renderAll();toast("تمت إضافة المادة.");
 });
-
 $("libraryForm").addEventListener("submit",event=>{
   event.preventDefault();
   const rawUrl=$("libraryUrl").value.trim();
-  if(rawUrl&&!safeUrl(rawUrl)) return toast("أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://");
+  if(rawUrl&&!safeUrl(rawUrl))return toast("أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://");
   data.library.unshift({id:makeId(),title:$("libraryTitle").value.trim(),category:$("libraryCategory").value,url:rawUrl,description:$("libraryDescription").value.trim()});
   saveData();event.target.reset();renderAll();toast("تم حفظ المرجع.");
 });
-
 $("postForm").addEventListener("submit",event=>{
   event.preventDefault();
-  if(!currentUser) return toast("سجّل الدخول قبل نشر منشور.");
+  if(!currentUser)return toast("سجّل الدخول قبل نشر منشور.");
   data.posts.unshift({id:makeId(),title:$("postTitle").value.trim(),content:$("postContent").value.trim(),author:data.profile.name||currentUser.user_metadata?.full_name||currentUser.email,date:new Date().toLocaleDateString("ar-EG")});
   saveData();event.target.reset();renderAll();toast("تم نشر المنشور في هذا المتصفح.");
 });
-
 $("taskForm").addEventListener("submit",event=>{
   event.preventDefault();
   data.tasks.unshift({id:makeId(),title:$("taskTitle").value.trim(),date:$("taskDate").value,done:false});
   saveData();event.target.reset();renderAll();toast("تمت إضافة المهمة.");
 });
-
 $("noteForm").addEventListener("submit",event=>{
   event.preventDefault();
   data.notes.unshift({id:makeId(),title:$("noteTitle").value.trim(),content:$("noteContent").value.trim(),date:new Date().toLocaleDateString("ar-EG")});
   saveData();event.target.reset();renderAll();toast("تم حفظ الملاحظة.");
 });
-
 $("subjectSearch").addEventListener("input",renderSubjects);
 $("librarySearch").addEventListener("input",renderLibrary);
 
@@ -610,18 +594,20 @@ document.addEventListener("click",event=>{
     if(task){task.done=!task.done;saveData();renderAll();toast(task.done?"تم إنجاز المهمة.":"أعيد فتح المهمة.");}
   }
   if(action==="unsave-item"){
-    data.saved=data.saved.filter(x=>x.id!==id);saveData();renderAll();toast("تمت إزالة العنصر من المحفوظات.");
+    const savedItem=data.saved.find(x=>x.id===id);
+    if(savedItem){
+      data.saved=data.saved.filter(x=>!(x.id===id&&x.type===savedItem.type));
+      saveData();renderAll();toast("تمت إزالة العنصر من المحفوظات.");
+    }
   }
 });
 
-/* إنشاء حساب */
+/* إنشاء حساب باستخدام Supabase Auth */
 $("signupBtn").addEventListener("click",async()=>{
-  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. تحقق من إعدادات Supabase والإنترنت.",true);
-
+  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. راجع إعدادات Supabase.",true);
   const name=$("authName").value.trim();
   const email=$("authEmail").value.trim();
   const password=$("authPassword").value;
-
   if(!name)return setAuthMessage("اكتب اسمك أولًا.",true);
   if(!email)return setAuthMessage("اكتب البريد الإلكتروني.",true);
   if(password.length<6)return setAuthMessage("كلمة المرور يجب ألا تقل عن 6 أحرف.",true);
@@ -629,58 +615,45 @@ $("signupBtn").addEventListener("click",async()=>{
   setAuthBusy(true);
   try{
     const {data:result,error}=await supabaseClient.auth.signUp({
-      email,
-      password,
-      options:{data:{full_name:name}}
+      email,password,options:{data:{full_name:name}}
     });
     if(error)throw error;
-
     if(result.session){
       currentUser=result.user;
       data.profile.name=name;
-      saveData();
-      updateAuthUI();
-      renderAll();
+      saveData();updateAuthUI();renderAll();
       setAuthMessage("تم إنشاء الحساب وتسجيل الدخول بنجاح.");
       toast("أهلًا بك في UniMate.");
+      showSection("home");
     }else{
-      setAuthMessage("تم إرسال طلب إنشاء الحساب. إذا كان تأكيد البريد مفعّلًا في Supabase، افتح رسالة التأكيد ثم ارجع لتسجيل الدخول.");
+      setAuthMessage("تم إرسال طلب إنشاء الحساب. افتح رسالة التأكيد إذا كان تأكيد البريد مفعّلًا في Supabase، ثم سجّل الدخول.");
     }
   }catch(error){
     setAuthMessage(error.message||"تعذر إنشاء الحساب. حاول مرة أخرى.",true);
-  }finally{
-    setAuthBusy(false);
-  }
+  }finally{setAuthBusy(false);}
 });
 
 /* تسجيل الدخول */
 $("loginBtn").addEventListener("click",async()=>{
-  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. تحقق من إعدادات Supabase والإنترنت.",true);
-
+  if(!supabaseClient)return setAuthMessage("تعذر الاتصال بخدمة الحسابات. راجع إعدادات Supabase.",true);
   const email=$("authEmail").value.trim();
   const password=$("authPassword").value;
-
   if(!email||!password)return setAuthMessage("أدخل البريد الإلكتروني وكلمة المرور.",true);
 
   setAuthBusy(true);
   try{
     const {data:result,error}=await supabaseClient.auth.signInWithPassword({email,password});
     if(error)throw error;
-
     currentUser=result.user;
     const name=currentUser.user_metadata?.full_name;
     if(name&&!data.profile.name)data.profile.name=name;
-    saveData();
-    updateAuthUI();
-    renderAll();
+    saveData();updateAuthUI();renderAll();
     setAuthMessage("تم تسجيل الدخول بنجاح.");
     toast("أهلًا بك في UniMate.");
     showSection("home");
   }catch(error){
     setAuthMessage(error.message||"تعذر تسجيل الدخول. راجع بياناتك وحاول مرة أخرى.",true);
-  }finally{
-    setAuthBusy(false);
-  }
+  }finally{setAuthBusy(false);}
 });
 
 /* تسجيل الخروج */
@@ -690,20 +663,15 @@ $("logoutBtn").addEventListener("click",async()=>{
   try{
     const {error}=await supabaseClient.auth.signOut();
     if(error)throw error;
-    currentUser=null;
-    updateAuthUI();
-    renderAll();
+    currentUser=null;updateAuthUI();renderAll();
     setAuthMessage("تم تسجيل الخروج.");
-    toast("تم تسجيل الخروج.");
-    showSection("home");
+    toast("تم تسجيل الخروج.");showSection("home");
   }catch(error){
     toast(error.message||"تعذر تسجيل الخروج.");
-  }finally{
-    $("logoutBtn").disabled=false;
-  }
+  }finally{$("logoutBtn").disabled=false;}
 });
 
-/* مساعد UniMate AI */
+/* مساعد الذكاء الاصطناعي: يتصل بواجهة /api/chat الموجودة في المشروع */
 async function askAssistant(question){
   const response=await fetch("/api/chat",{
     method:"POST",
@@ -718,24 +686,20 @@ async function askAssistant(question){
   if(!answer)throw new Error("وصل رد غير متوقع من المساعد.");
   return answer;
 }
-
 $("chatForm").addEventListener("submit",async event=>{
   event.preventDefault();
   const input=$("chatInput");
   const question=input.value.trim();
   if(!question)return;
-
   data.chat.push({role:"user",text:question});
   saveData();input.value="";renderChat();
   const btn=$("sendChatBtn");
   btn.disabled=true;btn.textContent="جارٍ الرد...";
-
   const waiting=document.createElement("div");
   waiting.className="message bot";
   waiting.textContent="جارٍ تجهيز الرد...";
   waiting.id="aiWaiting";
   $("chatMessages").appendChild(waiting);
-
   try{
     const answer=await askAssistant(question);
     data.chat.push({role:"assistant",text:answer});
@@ -743,23 +707,21 @@ $("chatForm").addEventListener("submit",async event=>{
   }catch(error){
     console.error("UniMate AI:",error);
     $("aiWaiting")?.remove();
-    data.chat.push({role:"assistant",text:"تعذر الحصول على الرد الآن. تأكد من اتصال الإنترنت وإعدادات /api/chat في Vercel، ثم حاول مرة أخرى."});
+    data.chat.push({role:"assistant",text:"تعذر الحصول على الرد الآن. تأكد من الإنترنت وإعدادات /api/chat في Vercel، ثم حاول مرة أخرى."});
     saveData();renderChat();
   }finally{
     btn.disabled=false;btn.textContent="إرسال";input.focus();
   }
 });
 
-/* بدء التطبيق واستعادة جلسة Supabase */
+/* تهيئة Supabase واستعادة جلسة تسجيل الدخول */
 try{
   if(!window.supabase)throw new Error("لم يتم تحميل مكتبة Supabase.");
   supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-
   supabaseClient.auth.onAuthStateChange((_event,session)=>{
     currentUser=session?.user||null;
     updateAuthUI();
   });
-
   supabaseClient.auth.getSession().then(({data:result,error})=>{
     if(error)throw error;
     currentUser=result.session?.user||null;
@@ -775,7 +737,6 @@ try{
 
 renderAll();
 updateAuthUI();
-
 })();
 </script>
 </body>
